@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/pages/simple_todo_page.dart';
+import 'package:week_task/pages/nested_todo_list.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
