@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:week_task/data_source/fake_data.dart';
-import 'package:week_task/models/bloc.dart';
+import 'package:week_task/models/block.dart';
 
 class TasksNotifier extends StateNotifier<Block> {
   TasksNotifier(this.ref) : super(block);

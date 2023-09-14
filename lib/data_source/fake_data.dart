@@ -1,4 +1,4 @@
-import 'package:week_task/models/bloc.dart';
+import 'package:week_task/models/block.dart';
 import 'package:week_task/pages/nested_todo_list.dart';
 
 final block = Block(

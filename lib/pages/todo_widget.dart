@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/models/bloc.dart';
-import 'package:week_task/pages/nested_todo_list.dart';
+import 'package:week_task/models/block.dart';
 import 'package:week_task/providers/task_provider.dart';
 
 class TodoWidget extends StatelessWidget {
@@ -12,12 +10,13 @@ class TodoWidget extends StatelessWidget {
     required this.block,
     Key? key,
   }) : super(key: key ?? Key(block.id.toString()));
+
   final Block block;
 
   final topGap = 22.0;
   final inheritanceLineWidth = 0.5;
   final inheritanceLineColor = Colors.grey;
-  late TextEditingController textEditingController = TextEditingController(text: block.title);
+  late final TextEditingController textEditingController = TextEditingController(text: block.title);
   late String prevText = block.title;
   final textFieldFocusNode = FocusNode();
   final keyboardFocusNode = FocusNode();
@@ -98,7 +97,6 @@ class TodoWidget extends StatelessWidget {
                         builder: (context, ref, child) {
                           return RawKeyboardListener(
                             focusNode: keyboardFocusNode,
-
                             onKey: (event) {
                               if (event is RawKeyDownEvent &&
                                   event.data.physicalKey == PhysicalKeyboardKey.backspace &&
@@ -131,7 +129,7 @@ class TodoWidget extends StatelessWidget {
                   Column(
                     children: List.generate(
                       block.nestedBlocks?.length ?? 0,
-                          (index) => TodoWidget(
+                      (index) => TodoWidget(
                         block: block.nestedBlocks![index],
                       ),
                     ),
