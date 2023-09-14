@@ -12,11 +12,11 @@ final data = {
     "segments": [
       {
         "start": 0,
-        "end": 2,
+        "end": 6,
         "bold": false,
       },
       {
-        "start": 2,
+        "start": 6,
         "end": 10,
         "bold": true,
       },
@@ -24,14 +24,22 @@ final data = {
   }
 };
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+const text = "Bangladesh is a country in South Asia";
+
+class _MyAppState extends State<MyApp> {
   final controller = RichTextEditingController(
-    text: data["text"] as String,
-    richData: RichData.fromMap(data["style"]),
+    text: text,
+    // richData: RichData.fromMap(data["style"]),
   );
-  String prevText = data["text"] as String;
+
+  String prevText = text;
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +56,15 @@ class MyApp extends StatelessWidget {
               controller: controller,
               onChanged: (value) {
                 final delta = value.length - prevText.length;
-                print("base offset ${controller.selection.baseOffset}");
-                print("extent offset ${controller.selection.extentOffset}");
-                print("delta $delta");
-                controller.richData?.update(controller.selection.baseOffset, delta);
+                if (delta == 1) {
+                  controller.richData?.addSingleCharacter(controller.selection.baseOffset);
+                } else if (delta == -1) {
+                  controller.richData?.removeSingleCharacter(controller.selection.baseOffset);
+                } else if (delta < -1) {
+                  controller.richData?.removeMultiple(controller.selection.baseOffset, delta);
+                } else if (delta > 1) {
+                  controller.richData?.addMultiple(controller.selection.baseOffset, delta);
+                }
                 prevText = value;
               },
             ),
@@ -59,12 +72,28 @@ class MyApp extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    controller.richData?.breakItem(controller.selection.baseOffset);
+                    if (!controller.selection.isCollapsed) {
+                      controller.richData?.addRich(
+                        controller.selection.baseOffset,
+                        controller.selection.extentOffset,
+                        true,
+                      );
+                      setState(() {});
+                    }
                   },
                   icon: const Icon(Icons.ac_unit),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (!controller.selection.isCollapsed) {
+                      controller.richData?.addRich(
+                        controller.selection.baseOffset,
+                        controller.selection.extentOffset,
+                        false,
+                      );
+                      setState(() {});
+                    }
+                  },
                   icon: const Icon(Icons.local_fire_department),
                 ),
               ],
@@ -96,11 +125,6 @@ class RichTextEditingController extends TextEditingController {
 
   RichData? richData;
   String? prevText;
-
-  @override
-  set value(TextEditingValue newValue) {
-    super.value = newValue;
-  }
 
   @override
   TextSpan buildTextSpan({
@@ -146,29 +170,107 @@ class RichData {
     );
   }
 
-  void update(int offset, int delta) {
+  void addSingleCharacter(int offset) {
+    addToSingleSegment(offset, 1);
+  }
+
+  void removeSingleCharacter(int offset) {
+    removeFromSingleSegment(offset, -1);
+  }
+
+  void addToSingleSegment(int offset, int delta) {
     bool needShift = false;
     int removeIndex = -1;
-    for (final (ci, segment) in segments.indexed) {
-      int endCheck = delta >= 0 ? segment.end + 1 : segment.end - 1;
 
-      if (offset >= segment.start && offset <= endCheck && !needShift) {
-        segments[ci].end += delta;
-        if (segments[ci].start == segments[ci].end) {
-          removeIndex = ci;
+    for (final (index, segment) in segments.indexed) {
+      if (offset >= segment.start && offset <= segment.end + 1 && !needShift) {
+        segment.shift(end: delta);
+        if (segment.zeroWidth()) {
+          removeIndex = index;
         }
         needShift = true;
         continue;
       }
 
       if (needShift) {
-        segments[ci].shift(both: delta);
+        segment.shift(both: delta);
+      }
+    }
+
+    if (removeIndex != -1 && segments.length >= 2) {
+      segments.removeAt(removeIndex);
+    }
+  }
+
+  void removeFromSingleSegment(int offset, int delta) {
+    bool needShift = false;
+    int removeIndex = -1;
+    for (final (index, segment) in segments.indexed) {
+      if (offset >= segment.start && offset <= segment.end - 1 && !needShift) {
+        segment.shift(end: delta);
+        if (segment.zeroWidth()) {
+          removeIndex = index;
+        }
+        needShift = true;
+        continue;
+      }
+
+      if (needShift) {
+        segment.shift(both: delta);
       }
     }
     if (removeIndex != -1 && segments.length >= 2) {
       segments.removeAt(removeIndex);
     }
-    print(toMap());
+  }
+
+  void addMultiple(int offset, int delta) {
+    addToSingleSegment(offset - delta, delta);
+  }
+
+  void removeMultiple(int offset, int delta) {
+    int needToRemove = delta;
+    bool needShift = false;
+    List<int> stepRemove = [];
+
+    for (final segment in segments) {
+      if (needToRemove == 0) {
+        break;
+      }
+
+      if (offset >= segment.start && offset <= segment.end - 1 || needShift) {
+        int canRemove = offset - segment.end;
+        int nowRemove = canRemove > needToRemove ? canRemove : needToRemove;
+        needToRemove -= nowRemove;
+        stepRemove.add(nowRemove);
+        needShift = true;
+      }
+    }
+
+    for (var element in stepRemove) {
+      removeFromSingleSegment(offset, element);
+    }
+  }
+
+  void addRich(int baseOffset, int extentOffset, bool bold) {
+    if (baseOffset == extentOffset) {
+      return;
+    }
+    breakItem(baseOffset);
+    breakItem(extentOffset);
+    if (baseOffset < extentOffset) {
+      combineItem(
+        smallOffset: baseOffset,
+        bigOffset: extentOffset,
+        bold: bold,
+      );
+    } else {
+      combineItem(
+        smallOffset: extentOffset,
+        bigOffset: baseOffset,
+        bold: bold,
+      );
+    }
   }
 
   void breakItem(int breakOffset) {
@@ -185,7 +287,31 @@ class RichData {
       segments.insert(removeIndex, newLeftSegment);
       segments.insert(removeIndex + 1, newRightSegment);
     }
-    print(toMap()["segments"]);
+  }
+
+  void combineItem({
+    required int smallOffset,
+    required int bigOffset,
+    bool bold = false,
+  }) {
+    final firstIndex = segments.indexWhere(
+      (segment) => segment.start == smallOffset,
+    );
+    final secondIndex = segments.indexWhere(
+      (segment) => segment.end == bigOffset,
+    );
+
+    final newSegment = RichSegment(
+      start: segments[firstIndex].start,
+      end: segments[secondIndex].end,
+      bold: bold,
+    );
+
+    for (var i = firstIndex; i <= secondIndex; i++) {
+      segments.removeAt(firstIndex);
+    }
+
+    segments.insert(firstIndex, newSegment);
   }
 
   @override
@@ -234,6 +360,10 @@ class RichSegment {
     }
   }
 
+  bool zeroWidth() {
+    return start == end;
+  }
+
   RichSegment copyWith({int? start, int? end, bool? bold}) {
     return RichSegment(
       start: start ?? this.start,
@@ -244,7 +374,7 @@ class RichSegment {
 
   @override
   String toString() {
-    return "SegmentText{ start: $start, end: $end, bold: $bold }";
+    return "[$start...$end)";
   }
 
   Map toMap() {
