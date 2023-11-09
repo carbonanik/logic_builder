@@ -1,5 +1,5 @@
 class Block {
-  int id;
+  String id;
   String title;
   List<Block>? nestedBlocks;
   bool expanded;

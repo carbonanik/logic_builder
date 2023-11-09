@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:week_task/features/rich_text/rich_text_example.dart';
-import 'package:week_task/pages/logic_canvas.dart';
+import 'package:week_task/features/logic_simulator/logic_canvas.dart';
 import 'package:week_task/pages/nested_todo_list.dart';
 
 class ExperimentListPage extends StatelessWidget {
@@ -15,31 +15,34 @@ class ExperimentListPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            ElevatedButton(
+            Text("Experiment:\n "
+                "Complex ui with nested data", style: Theme.of(context).textTheme.displaySmall, textAlign: TextAlign.center),
+            const SizedBox(height: 60),
+            FilledButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return NestedTodoList();
+                  return const NestedTodoList();
                 }));
               },
-              child: Text("Nested Todo List"),
+              child: const Text("Nested Todo List"),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            FilledButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return RichTextExample();
+                  return const RichTextExample();
                 }));
               },
-              child: Text("Rich Text Example"),
+              child: const Text("Rich Text Example"),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            FilledButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return LogicCanvasWidget();
+                  return const LogicCanvasWidget();
                 }));
               },
-              child: Text("Logic Canvas"),
+              child: const Text("Logic Canvas"),
             )
           ],
         ),

@@ -1,36 +1,37 @@
 import 'package:week_task/models/block.dart';
+import 'package:uuid/uuid.dart' as uuid;
 
 final block = Block(
-  id: 1,
+  id: const uuid.Uuid().v4(),
   title: 'Project',
   nestedBlocks: [
     Block(
-      id: 2,
+      id: const uuid.Uuid().v4(),
       title: 'Task 1',
       nestedBlocks: [
-        Block(id: 5, title: 'Task 1.1'),
+        Block(id: const uuid.Uuid().v4(), title: 'Task 1.1'),
         Block(
-          id: 6,
+          id: const uuid.Uuid().v4(),
           title: 'Task 1.2',
           nestedBlocks: [
-            Block(id: 7, title: 'Task 1.2.1'),
-            Block(id: 8, title: 'Task 1.2.2'),
-            Block(id: 9, title: 'Task 1.2.3'),
+            Block(id: const uuid.Uuid().v4(), title: 'Task 1.2.1'),
+            Block(id: const uuid.Uuid().v4(), title: 'Task 1.2.2'),
+            Block(id: const uuid.Uuid().v4(), title: 'Task 1.2.3'),
           ],
         ),
       ],
     ),
-    Block(id: 3, title: 'Task 2'),
+    Block(id: const uuid.Uuid().v4(), title: 'Task 2'),
     Block(
-      id: 4,
+      id: const uuid.Uuid().v4(),
       title: 'Task 3',
       nestedBlocks: [
         Block(
-          id: 10,
+          id: const uuid.Uuid().v4(),
           title: 'Task 3.1',
           nestedBlocks: [
             Block(
-                id: 11,
+                id: const uuid.Uuid().v4(),
                 title: 'Task 3.1.1'),
           ],
         ),

@@ -20,6 +20,7 @@ class TodoWidget extends StatelessWidget {
   late String prevText = block.title;
   final textFieldFocusNode = FocusNode();
   final keyboardFocusNode = FocusNode();
+  bool ctrlPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +106,13 @@ class TodoWidget extends StatelessWidget {
                                 // ? remove task
                                 ref.read(tasksProvider.notifier).removeTask(block.id);
                               }
+                              if (event is RawKeyDownEvent &&
+                                  event.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+                                ctrlPressed = true;
+                              } else if (event is RawKeyUpEvent &&
+                                  event.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+                                ctrlPressed = false;
+                              }
                               prevText = textEditingController.text;
                             },
                             child: TextField(
@@ -119,8 +127,13 @@ class TodoWidget extends StatelessWidget {
                                 fontSize: 20,
                               ),
                               onSubmitted: (value) {
-                                ref.read(tasksProvider.notifier).updateText(block.id, value);
-                                ref.read(tasksProvider.notifier).addSiblingTask(block.id);
+                                if (ctrlPressed) {
+                                  ref.read(tasksProvider.notifier).updateText(block.id, value);
+                                  ref.read(tasksProvider.notifier).addChildTask(block.id);
+                                } else {
+                                  ref.read(tasksProvider.notifier).updateText(block.id, value);
+                                  ref.read(tasksProvider.notifier).addSiblingTask(block.id);
+                                }
                               },
                             ),
                           );
