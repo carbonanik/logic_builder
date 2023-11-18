@@ -15,13 +15,13 @@ final reservedComponents = [
   Part.fromIoCount(
     2,
     1,
-    const Offset(200, 200),
+    Offset.zero,
     "AND",
   ),
   Part.fromIoCount(
     2,
     1,
-    const Offset(200, 300),
+    Offset.zero,
     "OR",
   ),
 ];
@@ -42,6 +42,7 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
   Wire? currentWire;
   bool drawingWire = false;
   bool straightLine = false;
+  Part? selectedComponent;
 
   final keyboardFocusNode = FocusNode()..requestFocus();
 
@@ -54,8 +55,8 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
             focusNode: keyboardFocusNode,
             onKey: (value) {
               if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.escape) {
-                drawingWire = false;
-                currentWire = null;
+                _wireDrawingEnd();
+                selectedComponent = null;
                 setState(() {});
               } else if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
                 straightLine = true;
@@ -68,7 +69,14 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
               child: GestureDetector(
                 onTapDown: _handleOnTapDown,
                 child: CustomPaint(
-                  painter: LogicPainter(wires, components, cursorPos, drawingWire),
+                  painter: LogicPainter(
+                    wires: wires,
+                    components: components,
+                    cursorPos: cursorPos,
+                    drawingWire: drawingWire,
+                    selectedComponent: selectedComponent,
+                    drawingComponent: mode == Mode.component,
+                  ),
                   child: Container(),
                 ),
               ),
@@ -105,7 +113,31 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
                 ),
               ],
             ),
-          )
+          ),
+          if (mode == Mode.component)
+            Positioned(
+              left: 50,
+              bottom: 100,
+              child: Row(
+                children: List.generate(
+                  reservedComponents.length,
+                  (index) => ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        selectedComponent == reservedComponents[index] ? Colors.blue : null,
+                      ),
+                    ),
+                    onPressed: () {
+                      selectedComponent = reservedComponents[index];
+                      setState(() {});
+                    },
+                    child: Text(
+                      reservedComponents[index].name,
+                    ),
+                  ),
+                ),
+              ),
+            )
         ],
       ),
     );
@@ -131,9 +163,14 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
   }
 
   void _addComponent(Offset localPosition) {
-    components.add(reservedComponents[0].copyWith(
-      pos: localPosition,
-    ));
+    if (selectedComponent == null) {
+      return;
+    }
+    components.add(
+      selectedComponent!.copyWith(
+        pos: localPosition,
+      ),
+    );
   }
 
   void _addWire(Offset localPosition) {
@@ -144,59 +181,49 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
     }
   }
 
-  _addNewWire() {
-    for (var component in components) {
-      for (var i = 0; i < component.input.length; i++) {
-        final pos = component.input[i].pos + component.pos;
-        final hovered = (pos - cursorPos).distance < 6;
-        if (hovered) {
-          currentWire = Wire(points: [pos]);
-          wires.add(currentWire!);
-        }
-      }
-      for (var i = 0; i < component.output.length; i++) {
-        final pos = component.output[i].pos + component.pos;
-        final hovered = (pos - cursorPos).distance < 6;
-        if (hovered) {
-          currentWire = Wire(points: [pos]);
-          wires.add(currentWire!);
-        }
-      }
+  void _addNewWire() {
+    final ioPos = _isMousePointerOnIO();
+    if (ioPos != null) {
+      currentWire = Wire(points: [ioPos]);
+      wires.add(currentWire!);
     }
   }
 
-  _addPointToCurrentWire(Offset localPosition) {
-    bool isHovered = false;
-    Offset? iopos;
-    for (var component in components) {
-      for (var i = 0; i < component.input.length; i++) {
-        final pos = component.input[i].pos + component.pos;
-        isHovered = (pos - cursorPos).distance < 6;
-        if (isHovered) {
-          iopos = pos;
-          break;
-        }
-      }
-      for (var i = 0; i < component.output.length; i++) {
-        if (isHovered) break;
-        final pos = component.output[i].pos + component.pos;
-        isHovered = (pos - cursorPos).distance < 6;
-        if (isHovered) {
-          iopos = pos;
-          break;
-        }
-      }
-      if (isHovered) {
-        break;
-      }
-    }
-    if (isHovered) {
-      wires.last.addPoint(iopos!);
-      drawingWire = false;
-      currentWire = null;
+  void _addPointToCurrentWire(Offset localPosition) {
+    final Offset? ioPos = _isMousePointerOnIO();
+    if (ioPos != null) {
+      wires.last.addPoint(ioPos);
+      _wireDrawingEnd();
     } else {
       wires.last.addPoint(getPoint(localPosition, currentWire!.last));
     }
+  }
+
+  void _wireDrawingEnd() {
+    drawingWire = false;
+    currentWire = null;
+  }
+
+  Offset? _isMousePointerOnIO() {
+    Offset? ioPos;
+    for (var component in components) {
+      ioPos = _matchedIO(component.input, component.pos);
+      if (ioPos != null) break;
+      ioPos = _matchedIO(component.output, component.pos);
+      if (ioPos != null) break;
+    }
+    return ioPos;
+  }
+
+  Offset? _matchedIO(List<IO> ios, Offset componentPos) {
+    for (var i = 0; i < ios.length; i++) {
+      final pos = ios[i].pos + componentPos;
+      final isHovered = (pos - cursorPos).distance < 6;
+      if (isHovered) {
+        return pos;
+      }
+    }
+    return null;
   }
 
   Offset getPoint(Offset location, Offset lastPoint) {

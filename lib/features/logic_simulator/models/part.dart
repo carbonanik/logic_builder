@@ -19,8 +19,8 @@ class Part {
 
   factory Part.fromIoCount(int inputCount, int outputCount, Offset pos, String name) {
     final size = measureSize(inputCount, outputCount, name);
-    final input = generateIOs(inputCount, 0);
-    final output = generateIOs(outputCount, size.width);
+    final input = generateIOs(inputCount, 0, size.height);
+    final output = generateIOs(outputCount, size.width, size.height);
 
     return Part(
       input: input,
@@ -32,17 +32,31 @@ class Part {
   }
 
   static Size measureSize(int inputCount, int outputCount, String name) {
-    final most = max(inputCount, outputCount);
-    final double height = most * 20 + 20;
-    return Size(name.length * 14 + 2 * 20, height);
+    final mostIoCount = max(inputCount, outputCount);
+    final double height = _calculateHeight(mostIoCount);
+    final double width = _calculateWidth(name);
+    return Size(width, height);
   }
 
-  static generateIOs(int count, double xShift) {
+  static const spaceBetweenIO = 20.0;
+
+  static double _calculateHeight(int ioCount) {
+    return spaceBetweenIO * ioCount + spaceBetweenIO;
+    // every io get 20 unit space | add 20 unit padding on bottom
+  }
+
+  static double _calculateWidth(String name) {
+    return 14 * name.length + 2 * 20;
+    // calculate width using name | add 20 unit padding on left and right
+  }
+
+  static List<IO> generateIOs(int count, double xShift, double height) {
+    final yShift = (height - _calculateHeight(count)) / 2;
     return List.generate(
       count,
       (index) => IO(
         name: "$index",
-        pos: Offset(xShift, (index + 1) * 20),
+        pos: Offset(xShift, _calculateHeight(index) + yShift),
       ),
     );
   }

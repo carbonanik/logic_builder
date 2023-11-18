@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:week_task/features/logic_simulator/models/part.dart';
 import 'package:week_task/features/logic_simulator/models/wire.dart';
 
-class LogicPainter extends CustomPainter {
+class WirePainter extends CustomPainter {
   final List<Wire> wires;
   final List<Part> components;
   final Offset cursorPos;
@@ -13,7 +13,7 @@ class LogicPainter extends CustomPainter {
   final Part? selectedComponent;
   final bool drawingComponent;
 
-  LogicPainter({
+  WirePainter({
     required this.wires,
     required this.components,
     required this.cursorPos,
