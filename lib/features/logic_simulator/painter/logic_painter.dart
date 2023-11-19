@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:week_task/features/logic_simulator/models/part.dart';
+import 'package:week_task/features/logic_simulator/models/component.dart';
 
 class LogicPainter extends CustomPainter {
-  final List<Part> components;
+  final List<Component> components;
   final Offset cursorPos;
-  final Part? selectedComponent;
+  final Component? selectedComponent;
   final bool drawingComponent;
   final Offset panOffset;
 
@@ -95,7 +95,7 @@ class LogicPainter extends CustomPainter {
     canvas.drawCircle(pos, 6, paint);
   }
 
-  void drawTitle(Canvas canvas, Part component) {
+  void drawTitle(Canvas canvas, Component component) {
     const textStyle = TextStyle(
       color: Colors.redAccent,
       fontSize: 24,

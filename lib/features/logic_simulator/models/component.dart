@@ -2,14 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class Part {
+class Component {
   final List<IO> input;
   final List<IO> output;
   final String name;
   final Offset pos;
   final Size size;
 
-  Part({
+  Component({
     required this.input,
     required this.output,
     required this.name,
@@ -17,12 +17,12 @@ class Part {
     required this.size,
   });
 
-  factory Part.fromIoCount(int inputCount, int outputCount, Offset pos, String name) {
+  factory Component.fromIoCount(int inputCount, int outputCount, Offset pos, String name) {
     final size = measureSize(inputCount, outputCount, name);
     final input = generateIOs(inputCount, 0, size.height);
     final output = generateIOs(outputCount, size.width, size.height);
 
-    return Part(
+    return Component(
       input: input,
       output: output,
       name: name,
@@ -61,14 +61,14 @@ class Part {
     );
   }
 
-  Part copyWith({
+  Component copyWith({
     List<IO>? input,
     List<IO>? output,
     String? name,
     Offset? pos,
     Size? size,
   }) {
-    return Part(
+    return Component(
       input: input ?? this.input,
       output: output ?? this.output,
       name: name ?? this.name,

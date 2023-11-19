@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:week_task/features/logic_simulator/models/part.dart';
+import 'package:week_task/features/logic_simulator/models/component.dart';
 import 'package:week_task/features/logic_simulator/models/wire.dart';
 import 'package:week_task/features/logic_simulator/painter/logic_painter.dart';
 import 'package:week_task/features/logic_simulator/painter/wire_painter.dart';
@@ -13,19 +13,19 @@ enum Mode {
 }
 
 final reservedComponents = [
-  Part.fromIoCount(
+  Component.fromIoCount(
     2,
     1,
     Offset.zero,
     "AND",
   ),
-  Part.fromIoCount(
+  Component.fromIoCount(
     2,
     1,
     Offset.zero,
     "OR",
   ),
-  Part.fromIoCount(
+  Component.fromIoCount(
     1,
     1,
     Offset.zero,
@@ -43,12 +43,12 @@ class LogicCanvasWidget extends StatefulWidget {
 class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
   Mode mode = Mode.view;
   List<Wire> wires = [];
-  List<Part> components = []; //todo
+  List<Component> components = []; //todo
   Offset cursorPos = const Offset(0, 0);
   Wire? currentWire;
   bool drawingWire = false;
   bool straightLine = false;
-  Part? selectedComponent;
+  Component? selectedComponent;
   Offset panOffset = const Offset(0, 0);
 
   final keyboardFocusNode = FocusNode()..requestFocus();
