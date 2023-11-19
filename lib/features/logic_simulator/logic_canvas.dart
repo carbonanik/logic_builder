@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:week_task/features/logic_simulator/models/part.dart';
 import 'package:week_task/features/logic_simulator/models/wire.dart';
 import 'package:week_task/features/logic_simulator/painter/logic_painter.dart';
+import 'package:week_task/features/logic_simulator/painter/wire_painter.dart';
 
 enum Mode {
   view,
@@ -24,6 +25,12 @@ final reservedComponents = [
     Offset.zero,
     "OR",
   ),
+  Part.fromIoCount(
+    1,
+    1,
+    Offset.zero,
+    "NOT",
+  ),
 ];
 
 class LogicCanvasWidget extends StatefulWidget {
@@ -36,13 +43,13 @@ class LogicCanvasWidget extends StatefulWidget {
 class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
   Mode mode = Mode.view;
   List<Wire> wires = [];
-  List<Part> components = [];
+  List<Part> components = []; //todo
   Offset cursorPos = const Offset(0, 0);
-  Offset? pointerOnIo;
   Wire? currentWire;
   bool drawingWire = false;
   bool straightLine = false;
   Part? selectedComponent;
+  Offset panOffset = const Offset(0, 0);
 
   final keyboardFocusNode = FocusNode()..requestFocus();
 
@@ -68,16 +75,28 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
               onPointerHover: _handlePointerHover,
               child: GestureDetector(
                 onTapDown: _handleOnTapDown,
+                onPanUpdate: (details) {
+                  // print(details.delta);
+                  panOffset += details.delta;
+                  setState(() {});
+                },
                 child: CustomPaint(
-                  painter: LogicPainter(
+                  painter: WirePainter(
                     wires: wires,
-                    components: components,
-                    cursorPos: cursorPos,
+                    cursorPos: cursorPos + panOffset,
                     drawingWire: drawingWire,
-                    selectedComponent: selectedComponent,
-                    drawingComponent: mode == Mode.component,
+                     panOffset: panOffset,
                   ),
-                  child: Container(),
+                  child: CustomPaint(
+                    painter: LogicPainter(
+                      components: components,
+                      cursorPos: cursorPos + panOffset,
+                      selectedComponent: selectedComponent,
+                      drawingComponent: mode == Mode.component,
+                      panOffset: panOffset,
+                    ),
+                    child: Container(),
+                  ),
                 ),
               ),
             ),
@@ -144,22 +163,28 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
   }
 
   void _handlePointerHover(PointerHoverEvent event) {
+    final localPosition = _excludePanOffset(event.localPosition);
     if (currentWire != null) {
-      cursorPos = getPoint(event.localPosition, currentWire!.last);
+      cursorPos = getPoint(localPosition, currentWire!.last);
       drawingWire = true;
     } else {
-      cursorPos = event.localPosition;
+      cursorPos = localPosition;
     }
     setState(() {});
   }
 
   void _handleOnTapDown(TapDownDetails details) {
+    final localPosition = _excludePanOffset(details.localPosition);
     if (mode == Mode.wire) {
-      _addWire(details.localPosition);
+      _addWire(localPosition);
     } else if (mode == Mode.component) {
-      _addComponent(details.localPosition);
+      _addComponent(localPosition);
     }
     setState(() {});
+  }
+
+  Offset _excludePanOffset(Offset localPosition) {
+    return localPosition - panOffset;
   }
 
   void _addComponent(Offset localPosition) {
@@ -212,6 +237,9 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
       ioPos = _matchedIO(component.output, component.pos);
       if (ioPos != null) break;
     }
+    if (ioPos == null) {
+      return null;
+    }
     return ioPos;
   }
 
@@ -219,6 +247,7 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
     for (var i = 0; i < ios.length; i++) {
       final pos = ios[i].pos + componentPos;
       final isHovered = (pos - cursorPos).distance < 6;
+
       if (isHovered) {
         return pos;
       }

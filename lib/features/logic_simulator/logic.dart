@@ -101,7 +101,7 @@ evaluate(List<Map> components, Map componentLookup) {
     component["state"] = (aOut == "x" || bOut == "x") ? "x" : logicFn(aOut["state"], bOut["state"]);
   }
 
-  components.forEach((component) {
+  for (var component in components) {
     switch (component["type"]) {
       case "controlled":
         break;
@@ -128,7 +128,7 @@ evaluate(List<Map> components, Map componentLookup) {
         component["state"] = (out == "x") ? "x" : not(out["state"]);
         break;
     }
-  });
+  }
 }
 
 
