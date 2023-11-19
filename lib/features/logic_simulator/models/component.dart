@@ -17,7 +17,12 @@ class Component {
     required this.size,
   });
 
-  factory Component.fromIoCount(int inputCount, int outputCount, Offset pos, String name) {
+  factory Component.fromIoCount(
+    int inputCount,
+    int outputCount,
+    Offset pos,
+    String name,
+  ) {
     final size = measureSize(inputCount, outputCount, name);
     final input = generateIOs(inputCount, 0, size.height);
     final output = generateIOs(outputCount, size.width, size.height);
