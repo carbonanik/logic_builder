@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
 import 'package:week_task/features/logic_simulator/models/component.dart';
 import 'package:week_task/features/logic_simulator/models/wire.dart';
 import 'package:week_task/features/logic_simulator/painter/logic_painter.dart';
@@ -13,24 +14,24 @@ enum Mode {
 }
 
 final reservedComponents = [
-  Component.fromIoCount(
-    2,
-    1,
+  createComponent(
+    ["idInA", "idInB"],
+    ["ownId"],
     Offset.zero,
     "AND",
   ),
-  Component.fromIoCount(
-    2,
-    1,
+  createComponent(
+    ["idInA", "idInB"],
+    ["ownId"],
     Offset.zero,
     "OR",
   ),
-  Component.fromIoCount(
-    1,
-    1,
+  createComponent(
+    ["idIn"],
+    ["ownId"],
     Offset.zero,
     "NOT",
-  ),
+  )
 ];
 
 class LogicCanvasWidget extends StatefulWidget {
@@ -85,7 +86,7 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget> {
                     wires: wires,
                     cursorPos: cursorPos + panOffset,
                     drawingWire: drawingWire,
-                     panOffset: panOffset,
+                    panOffset: panOffset,
                   ),
                   child: CustomPaint(
                     painter: LogicPainter(

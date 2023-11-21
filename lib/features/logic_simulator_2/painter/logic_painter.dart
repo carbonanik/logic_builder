@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:week_task/features/logic_simulator/models/component.dart';
+import 'package:week_task/features/logic_simulator_2/models/discrete_component.dart';
 
 class LogicPainter extends CustomPainter {
-  final List<Component> components;
+  final List<DiscreteComponent> components;
+  final Map<String, DiscreteComponent> componentLookup;
   final Offset cursorPos;
-  final Component? selectedComponent;
+  final DiscreteComponent? selectedComponent;
   final bool drawingComponent;
   final Offset panOffset;
 
   LogicPainter({
     required this.components,
+    required this.componentLookup,
     required this.cursorPos,
     required this.selectedComponent,
     required this.drawingComponent,
@@ -85,8 +87,8 @@ class LogicPainter extends CustomPainter {
         rectPaint,
       );
 
-      drawIOs(canvas, component.input, component.pos, inputPaint);
-      drawIOs(canvas, component.output, component.pos, outputPaint);
+      drawIOs(canvas, component.inputs, component.pos, inputPaint);
+      drawIOs(canvas, [component.output], component.pos, outputPaint);
 
       drawTitle(canvas, component);
     }
@@ -107,7 +109,7 @@ class LogicPainter extends CustomPainter {
     canvas.drawCircle(pos, 6, paint);
   }
 
-  void drawTitle(Canvas canvas, Component component) {
+  void drawTitle(Canvas canvas, DiscreteComponent component) {
     const textStyle = TextStyle(
       color: Colors.redAccent,
       fontSize: 24,

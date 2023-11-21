@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:week_task/experiment.dart';
 import 'package:week_task/features/logic_simulator/logic_canvas.dart';
+import 'package:week_task/features/logic_simulator_2/logic_canvas.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       // home: const Experiment(),
-      home: const LogicCanvasWidget(),
+      home: const LogicCanvasWidget2(),
     );
   }
 }
