@@ -25,7 +25,7 @@ class WireNotifier extends ChangeNotifier {
   void _add(Wire wire) {
     _wires.add(wire);
     _wiresLookup[wire.id] = wire;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void addWire(Offset localPosition) {
@@ -35,6 +35,7 @@ class WireNotifier extends ChangeNotifier {
     } else {
       _addPointToCurrentWire(localPosition);
     }
+    notifyListeners();
   }
 
   void _addNewWire() {

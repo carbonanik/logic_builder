@@ -23,6 +23,7 @@ final reservedComponents = [
   createComponent(DiscreteComponentType.and),
   createComponent(DiscreteComponentType.or),
   createComponent(DiscreteComponentType.not),
+  createComponent(DiscreteComponentType.controlled),
 ];
 
 class CanvasPage extends StatefulWidget {

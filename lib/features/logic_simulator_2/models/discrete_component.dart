@@ -75,7 +75,7 @@ DiscreteComponent createDiscreteComponent({
   required String name,
   required DiscreteComponentType type,
 }) {
-  final double height = _calculateHeight(inputIds.length);
+  final double height = _calculateHeight(inputIds.isEmpty ? 1 : inputIds.length);
   final double width = _calculateWidth(name);
   final size = Size(width, height);
   final inputs = generateIOs(inputIds, 0, size.height);
@@ -204,9 +204,9 @@ DiscreteComponent createControlledComponent() {
     inputIds: [],
     outputId: ownId,
     pos: Offset.zero,
-    name: "Controlled",
+    name: "Ctrl",
     type: DiscreteComponentType.controlled,
-  );
+  ).copyWith(state: 1);
 }
 
 DiscreteComponent createComponent(DiscreteComponentType type) {
