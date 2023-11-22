@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 class Wire {
+  final String id;
   final List<Offset> _points;
   final Color color;
   final double width;
@@ -11,6 +11,7 @@ class Wire {
   bool isCompleted = true;
 
   Wire({
+    required this.id,
     List<Offset> points = const [],
     this.color = Colors.brown,
     this.width = 3,
@@ -33,6 +34,7 @@ class Wire {
     double? width,
   }) {
     return Wire(
+      id: id,
       connectionId: connectionId ?? this.connectionId,
       points: points ?? _points,
       color: color ?? this.color,

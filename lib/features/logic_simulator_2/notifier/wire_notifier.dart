@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import 'package:week_task/features/logic_simulator_2/models/matched_io.dart';
 import 'package:week_task/features/logic_simulator_2/models/pair.dart';
 import 'package:week_task/features/logic_simulator_2/models/wire.dart';
@@ -23,7 +24,7 @@ class WireNotifier extends ChangeNotifier {
 
   void _add(Wire wire) {
     _wires.add(wire);
-    _wiresLookup[wire.connectionId] = wire;
+    _wiresLookup[wire.id] = wire;
     notifyListeners();
   }
 
@@ -39,9 +40,11 @@ class WireNotifier extends ChangeNotifier {
   void _addNewWire() {
     final ioData = _ref.read(componentsProvider).isMousePointerOnIO();
     if (ioData == null) return;
-    _ref.read(currentDrawingWireIdProvider.notifier).state = ioData.ioId;
+    final id = const Uuid().v4();
+    _ref.read(currentDrawingWireIdProvider.notifier).state = id;
     _add(
       Wire(
+        id: id,
         points: [ioData.globalPos],
         connectionId: ioData.ioId,
       ),
