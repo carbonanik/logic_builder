@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/features/logic_simulator_2/event_handlers.dart';
-import 'package:week_task/features/logic_simulator_2/models/pair.dart';
-import 'package:week_task/features/logic_simulator_2/models/wire.dart';
 import 'package:week_task/features/logic_simulator_2/painter/logic_painter.dart';
 import 'package:week_task/features/logic_simulator_2/painter/wire_painter.dart';
 import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
@@ -51,7 +48,6 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
           final drawingWire = ref.watch(isDrawingWire);
           final selectedComponent = ref.watch(selectedComponentProvider);
           final mode = ref.watch(drawingModeProvider);
-          final currentWireConnectionID = ref.watch(currentDrawingWireIdProvider);
           final eventHandler = ref.watch(eventHandlerProvider);
           return Stack(
             children: [
@@ -61,11 +57,9 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
                   if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.escape) {
                     eventHandler.wireDrawingEnd();
                     ref.read(selectedComponentProvider.notifier).state = null;
-                    setState(() {});
                   } else if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
                     ref.read(isControlPressed.notifier).state = true;
                   } else if (value is RawKeyUpEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
-                    // straightLine = false;
                     ref.read(isControlPressed.notifier).state = false;
                   }
                 },
@@ -74,10 +68,7 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
                   child: GestureDetector(
                     onTapDown: eventHandler.handleOnTapDown,
                     onPanUpdate: (details) {
-                      // print(details.delta);
-                      // panOffset += details.delta;
                       ref.read(panOffsetProvider.notifier).state += details.delta;
-                      setState(() {});
                     },
                     child: CustomPaint(
                       painter: WirePainter(
@@ -112,12 +103,9 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
                       onPressed: () {
                         if (mode == Mode.component) {
                           ref.read(drawingModeProvider.notifier).state = Mode.view;
-                          // mode = Mode.view;
                         } else {
                           ref.read(drawingModeProvider.notifier).state = Mode.component;
-                          // mode = Mode.component;
                         }
-                        setState(() {});
                       },
                       icon: const Icon(Icons.comment_bank),
                     ),
@@ -125,13 +113,10 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
                       color: mode == Mode.wire ? Colors.blue : null,
                       onPressed: () {
                         if (mode == Mode.wire) {
-                          // mode = Mode.view;
                           ref.read(drawingModeProvider.notifier).state = Mode.view;
                         } else {
-                          // mode = Mode.wire;
                           ref.read(drawingModeProvider.notifier).state = Mode.wire;
                         }
-                        setState(() {});
                       },
                       icon: const Icon(Icons.line_axis),
                     ),
@@ -152,7 +137,6 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
                           ),
                         ),
                         onPressed: () {
-                          // selectedComponent = reservedComponents[index];
                           ref.read(selectedComponentProvider.notifier).state = reservedComponents[index];
                           setState(() {});
                         },
