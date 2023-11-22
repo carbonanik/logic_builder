@@ -25,14 +25,14 @@ final reservedComponents = [
   createComponent(DiscreteComponentType.not),
 ];
 
-class LogicCanvasWidget2 extends StatefulWidget {
-  const LogicCanvasWidget2({super.key});
+class CanvasPage extends StatefulWidget {
+  const CanvasPage({super.key});
 
   @override
-  State<LogicCanvasWidget2> createState() => _LogicCanvasWidgetState();
+  State<CanvasPage> createState() => _LogicCanvasWidgetState();
 }
 
-class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
+class _LogicCanvasWidgetState extends State<CanvasPage> {
 
   final keyboardFocusNode = FocusNode()..requestFocus();
 
@@ -138,7 +138,6 @@ class _LogicCanvasWidgetState extends State<LogicCanvasWidget2> {
                         ),
                         onPressed: () {
                           ref.read(selectedComponentProvider.notifier).state = reservedComponents[index];
-                          setState(() {});
                         },
                         child: Text(
                           reservedComponents[index].name,

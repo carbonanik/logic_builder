@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/features/logic_simulator_2/logic_canvas.dart';
+import 'package:week_task/features/logic_simulator_2/canvas_page.dart';
 import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
 import 'package:week_task/features/logic_simulator_2/provider/cursor_position_state_provider.dart';
 import 'package:week_task/features/logic_simulator_2/provider/drawing_mode_provider.dart';
@@ -20,10 +20,8 @@ class EventsHandler {
       final currentWire = ref.read(currentWireProvider)!;
       final cursorPos = getPoint(localPosition, currentWire.last);
       ref.read(cursorPositionProvider.notifier).state = cursorPos;
-      // drawingWire = true;
       ref.read(isDrawingWire.notifier).state = true;
     } else {
-      // cursorPos = localPosition;
       ref.read(cursorPositionProvider.notifier).state = localPosition;
     }
   }
@@ -32,7 +30,6 @@ class EventsHandler {
     final mode = ref.read(drawingModeProvider);
     final localPosition = _excludePanOffset(details.localPosition);
     if (mode == Mode.wire) {
-      // _addWire(localPosition);
       ref.read(wiresProvider.notifier).addWire(localPosition);
     } else if (mode == Mode.component) {
       ref.read(componentsProvider).addComponent(localPosition);
@@ -67,9 +64,7 @@ class EventsHandler {
 
 
   void wireDrawingEnd() {
-    // drawingWire = false;
     ref.read(isDrawingWire.notifier).state = false;
-    // currentWireConnectionID = null;
     ref.read(currentDrawingWireIdProvider.notifier).state = null;
   }
 }

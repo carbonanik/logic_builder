@@ -20,13 +20,13 @@ class LogicPainter extends CustomPainter {
 
   final rectPaint = Paint()..style = PaintingStyle.fill;
 
-  final inputPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.blue;
-
-  final outputPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.red;
+  // final inputPaint = Paint()
+  //   ..style = PaintingStyle.fill
+  //   ..color = Colors.blue;
+  //
+  // final outputPaint = Paint()
+  //   ..style = PaintingStyle.fill
+  //   ..color = Colors.red;
 
   final highPaint = Paint()
     ..style = PaintingStyle.fill
@@ -87,18 +87,32 @@ class LogicPainter extends CustomPainter {
         rectPaint,
       );
 
-      drawIOs(canvas, component.inputs, component.pos, inputPaint);
-      drawIOs(canvas, [component.output], component.pos, outputPaint);
+      drawIOs(canvas, component.inputs, component.pos, true);
+      drawIOs(canvas, [component.output], component.pos, false);
 
       drawTitle(canvas, component);
     }
   }
 
-  void drawIOs(Canvas canvas, List<IO> ios, Offset partPos, Paint paint) {
+  void drawIOs(Canvas canvas, List<IO> ios, Offset partPos, bool isInput) {
     for (int i = 0; i < ios.length; i++) {
       final pos = ios[i].pos + partPos;
       final hovered = (pos - cursorPos).distance < 6;
-      drawIO(canvas, hovered, pos, paint);
+
+      Paint? paint;
+      final inputState = componentLookup[ios[i].id]?.state;
+      if (inputState == 0) {
+        paint = lowPaint;
+      } else if (inputState == 1) {
+        paint = highPaint;
+      }
+
+      drawIO(
+        canvas,
+        hovered,
+        pos,
+        paint ?? floatingPaint,
+      );
     }
   }
 
