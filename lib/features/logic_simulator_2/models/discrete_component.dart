@@ -9,8 +9,6 @@ enum DiscreteComponentType {
   nand,
   or,
   nor,
-  xor,
-  xnor,
   controlled,
 }
 
@@ -171,6 +169,46 @@ DiscreteComponent createOrComponent() {
   );
 }
 
+DiscreteComponent createNandComponent() {
+  final ownId = const Uuid().v4();
+  final idInA = const Uuid().v4();
+  final idInB = const Uuid().v4();
+
+  return createDiscreteComponent(
+    inputIds: [idInA, idInB],
+    outputId: ownId,
+    pos: Offset.zero,
+    name: "NAND",
+    type: DiscreteComponentType.nand,
+  );
+}
+
+DiscreteComponent createNorComponent() {
+  final ownId = const Uuid().v4();
+  final idInA = const Uuid().v4();
+  final idInB = const Uuid().v4();
+
+  return createDiscreteComponent(
+    inputIds: [idInA, idInB],
+    outputId: ownId,
+    pos: Offset.zero,
+    name: "NOR",
+    type: DiscreteComponentType.nor,
+  );
+}
+
+DiscreteComponent createControlledComponent() {
+  final ownId = const Uuid().v4();
+
+  return createDiscreteComponent(
+    inputIds: [],
+    outputId: ownId,
+    pos: Offset.zero,
+    name: "Controlled",
+    type: DiscreteComponentType.controlled,
+  );
+}
+
 DiscreteComponent createComponent(DiscreteComponentType type) {
   switch (type) {
     case DiscreteComponentType.not:
@@ -179,10 +217,11 @@ DiscreteComponent createComponent(DiscreteComponentType type) {
       return createAndComponent();
     case DiscreteComponentType.or:
       return createOrComponent();
-    default:
-      return createNotComponent();
+    case DiscreteComponentType.nand:
+      return createNandComponent();
+    case DiscreteComponentType.nor:
+      return createNorComponent();
+    case DiscreteComponentType.controlled:
+      return createControlledComponent();
   }
 }
-
-
-
