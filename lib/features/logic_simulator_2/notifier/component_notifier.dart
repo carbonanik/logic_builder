@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:week_task/features/logic_simulator_2/models/discrete_component.dart';
+import 'package:week_task/features/logic_simulator_2/models/matched_io.dart';
 import 'package:week_task/features/logic_simulator_2/models/pair.dart';
 import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
 import 'package:week_task/features/logic_simulator_2/provider/cursor_position_state_provider.dart';
@@ -35,13 +36,11 @@ class ComponentNotifier extends ChangeNotifier {
     ).copyWith(
       pos: localPosition,
     );
-    // wires[comp.output.id] = comp;
-    // _ref.read(componentsProvider.notifier).addComponent(comp);
     _add(comp);
   }
 
-  Pair<String, Offset>? isMousePointerOnIO() {
-    Pair<String, Offset>? ioData;
+  MatchedIoData? isMousePointerOnIO() {
+    MatchedIoData? ioData;
     for (var component in components) {
       ioData = _matchedIO(component.inputs, component.pos);
       if (ioData != null) break;
@@ -54,14 +53,18 @@ class ComponentNotifier extends ChangeNotifier {
     return ioData;
   }
 
-  Pair<String, Offset>? _matchedIO(List<IO> ios, Offset componentPos) {
+  MatchedIoData? _matchedIO(List<IO> ios, Offset componentPos) {
     final cursorPos = _ref.read(cursorPositionProvider);
     for (var i = 0; i < ios.length; i++) {
-      final pos = ios[i].pos + componentPos;
-      final isHovered = (pos - cursorPos).distance < 6;
+      final globalPos = ios[i].pos + componentPos;
+      final isHovered = (globalPos - cursorPos).distance < 6;
 
       if (isHovered) {
-        return Pair(ios[i].id, pos);
+        return MatchedIoData(
+          ioId: ios[i].id,
+          globalPos: globalPos,
+          componentId: '',
+        );
       }
     }
     return null;

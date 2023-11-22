@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:week_task/features/logic_simulator_2/models/matched_io.dart';
 import 'package:week_task/features/logic_simulator_2/models/pair.dart';
 import 'package:week_task/features/logic_simulator_2/models/wire.dart';
 import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
@@ -38,13 +39,11 @@ class WireNotifier extends ChangeNotifier {
   void _addNewWire() {
     final ioData = _ref.read(componentsProvider).isMousePointerOnIO();
     if (ioData == null) return;
-    // currentWireConnectionID = ioData.a;
-    _ref.read(currentDrawingWireIdProvider.notifier).state = ioData.a;
-    // wires[currentWireConnectionID!] = Wire(points: [ioData.b], connectionId: currentWireConnectionID!);
+    _ref.read(currentDrawingWireIdProvider.notifier).state = ioData.ioId;
     _add(
       Wire(
-        points: [ioData.b],
-        connectionId: ioData.a,
+        points: [ioData.globalPos],
+        connectionId: ioData.ioId,
       ),
     );
   }
@@ -53,9 +52,9 @@ class WireNotifier extends ChangeNotifier {
     final currentWire = _wiresLookup[_ref.read(currentDrawingWireIdProvider)];
     if (currentWire == null) return;
 
-    final Pair<String, Offset>? ioData = _ref.read(componentsProvider).isMousePointerOnIO();
+    final MatchedIoData? ioData = _ref.read(componentsProvider).isMousePointerOnIO();
     if (ioData != null) {
-      currentWire.addPoint(ioData.b);
+      currentWire.addPoint(ioData.globalPos);
       _ref.read(eventHandlerProvider).wireDrawingEnd();
     } else {
       currentWire.addPoint(

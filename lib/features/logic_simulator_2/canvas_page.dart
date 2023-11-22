@@ -154,14 +154,4 @@ class _LogicCanvasWidgetState extends State<CanvasPage> {
   }
 }
 
-class MatchedIoData {
-  final Offset globalPos;
-  final String ioId;
-  final String componentId;
 
-  MatchedIoData(
-    this.globalPos,
-    this.ioId,
-    this.componentId,
-  );
-}
