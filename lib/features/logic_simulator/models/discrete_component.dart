@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:week_task/features/logic_simulator_2/models/component_view_type.dart';
-import 'package:week_task/features/logic_simulator_2/models/discrete_component_type.dart';
-import 'package:week_task/features/logic_simulator_2/models/io.dart';
+import 'package:week_task/features/logic_simulator/models/component_view_type.dart';
+import 'package:week_task/features/logic_simulator/models/discrete_component_type.dart';
+import 'package:week_task/features/logic_simulator/models/io.dart';
 
 
 

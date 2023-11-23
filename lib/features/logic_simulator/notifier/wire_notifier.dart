@@ -3,12 +3,12 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:week_task/features/logic_simulator_2/models/matched_io.dart';
-import 'package:week_task/features/logic_simulator_2/models/pair.dart';
-import 'package:week_task/features/logic_simulator_2/models/wire.dart';
-import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/event_handler_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/wire_drawing_providers.dart';
+import 'package:week_task/features/logic_simulator/models/matched_io.dart';
+import 'package:week_task/features/logic_simulator/models/pair.dart';
+import 'package:week_task/features/logic_simulator/models/wire.dart';
+import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/event_handler_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/wire_drawing_providers.dart';
 
 class WireNotifier extends ChangeNotifier {
   final Ref _ref;
@@ -77,10 +77,9 @@ class WireNotifier extends ChangeNotifier {
       // do not add point if started and ended from the only input or output
       if (ioData.startFromInput == currentWire.startFromInput) return;
 
-
-
       // replace io id
-      if (currentWire.startFromInput) { // started from input ending at output
+      if (currentWire.startFromInput) {
+        // started from input ending at output
         final componentId = currentWire.startComponentId;
         final ioId = currentWire.connectionId;
         final replacedIoId = ioData.ioId;
@@ -90,7 +89,8 @@ class WireNotifier extends ChangeNotifier {
         _ref.read(eventHandlerProvider).wireDrawingEnd();
 
         _ref.read(componentsProvider).replaceInputIo(componentId, ioId, replacedIoId);
-      } else { // started from output ending at input
+      } else {
+        // started from output ending at input
         // already have a wire connected to the input
         if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null) return;
         final componentId = ioData.componentId;

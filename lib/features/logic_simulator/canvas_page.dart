@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/features/logic_simulator_2/models/discrete_component_type.dart';
-import 'package:week_task/features/logic_simulator_2/painter/logic_painter.dart';
-import 'package:week_task/features/logic_simulator_2/painter/wire_painter.dart';
-import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/cursor_position_state_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/drawing_mode_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/event_handler_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/pan_offset_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/selected_component_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/wire_drawing_providers.dart';
-import 'package:week_task/features/logic_simulator_2/provider/wires_provider.dart';
+import 'package:week_task/features/logic_simulator/models/discrete_component_type.dart';
+import 'package:week_task/features/logic_simulator/painter/logic_painter.dart';
+import 'package:week_task/features/logic_simulator/painter/wire_painter.dart';
+import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/cursor_position_state_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/drawing_mode_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/event_handler_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/pan_offset_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/selected_component_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/wire_drawing_providers.dart';
+import 'package:week_task/features/logic_simulator/provider/wires_provider.dart';
 import 'models/discrete_component.dart';
 
 enum Mode {

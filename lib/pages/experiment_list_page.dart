@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:week_task/features/logic_simulator_2/canvas_page.dart';
+import 'package:week_task/features/logic_simulator/canvas_page.dart';
 import 'package:week_task/features/rich_text/rich_text_example.dart';
 import 'package:week_task/pages/nested_todo_list.dart';
 

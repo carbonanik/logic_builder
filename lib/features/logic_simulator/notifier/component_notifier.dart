@@ -2,14 +2,14 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/features/logic_simulator_2/models/discrete_component.dart';
-import 'package:week_task/features/logic_simulator_2/models/discrete_component_type.dart';
-import 'package:week_task/features/logic_simulator_2/models/io.dart';
-import 'package:week_task/features/logic_simulator_2/models/matched_io.dart';
-import 'package:week_task/features/logic_simulator_2/models/pair.dart';
-import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/cursor_position_state_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/selected_component_provider.dart';
+import 'package:week_task/features/logic_simulator/models/discrete_component.dart';
+import 'package:week_task/features/logic_simulator/models/discrete_component_type.dart';
+import 'package:week_task/features/logic_simulator/models/io.dart';
+import 'package:week_task/features/logic_simulator/models/matched_io.dart';
+import 'package:week_task/features/logic_simulator/models/pair.dart';
+import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/cursor_position_state_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/selected_component_provider.dart';
 
 class ComponentNotifier extends ChangeNotifier {
   final Ref _ref;
@@ -81,7 +81,7 @@ class ComponentNotifier extends ChangeNotifier {
     return null;
   }
 
-  void toggleControlled(){
+  void toggleControlled() {
     final component = isMousePointerOnComponent();
     if (component == null) return;
     if (component.type != DiscreteComponentType.controlled) return;

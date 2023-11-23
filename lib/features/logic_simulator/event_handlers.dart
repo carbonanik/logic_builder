@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/features/logic_simulator_2/canvas_page.dart';
-import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/cursor_position_state_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/drawing_mode_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/pan_offset_provider.dart';
-import 'package:week_task/features/logic_simulator_2/provider/wire_drawing_providers.dart';
-import 'package:week_task/features/logic_simulator_2/provider/wires_provider.dart';
+import 'package:week_task/features/logic_simulator/canvas_page.dart';
+import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/cursor_position_state_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/drawing_mode_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/pan_offset_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/wire_drawing_providers.dart';
+import 'package:week_task/features/logic_simulator/provider/wires_provider.dart';
 
 class EventsHandler {
   final Ref ref;

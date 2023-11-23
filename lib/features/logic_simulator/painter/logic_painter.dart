@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:week_task/features/logic_simulator_2/models/component_view_type.dart';
-import 'package:week_task/features/logic_simulator_2/models/discrete_component.dart';
-import 'package:week_task/features/logic_simulator_2/models/io.dart';
+import 'package:week_task/features/logic_simulator/models/component_view_type.dart';
+import 'package:week_task/features/logic_simulator/models/discrete_component.dart';
+import 'package:week_task/features/logic_simulator/models/io.dart';
 
 class LogicPainter extends CustomPainter {
   final List<DiscreteComponent> components;
