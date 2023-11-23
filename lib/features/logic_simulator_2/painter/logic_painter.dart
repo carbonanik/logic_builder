@@ -20,25 +20,17 @@ class LogicPainter extends CustomPainter {
 
   final rectPaint = Paint()..style = PaintingStyle.fill;
 
-  // final inputPaint = Paint()
-  //   ..style = PaintingStyle.fill
-  //   ..color = Colors.blue;
-  //
-  // final outputPaint = Paint()
-  //   ..style = PaintingStyle.fill
-  //   ..color = Colors.red;
-
   final highPaint = Paint()
     ..style = PaintingStyle.fill
     ..color = Colors.red;
 
   final lowPaint = Paint()
     ..style = PaintingStyle.fill
-    ..color = Colors.blue;
+    ..color = Colors.grey[800]!;
 
   final floatingPaint = Paint()
     ..style = PaintingStyle.fill
-    ..color = Colors.black;
+    ..color = Colors.grey;
 
   final hoverIoPaint = Paint()
     ..style = PaintingStyle.fill
@@ -71,7 +63,7 @@ class LogicPainter extends CustomPainter {
         rectPaint,
       );
 
-      drawTitle(canvas, selectedComponent!.copyWith(pos: cursorPos));
+      drawTitle(canvas, selectedComponent!.copyWith(pos: cursorPos), Colors.redAccent);
     }
   }
 
@@ -79,19 +71,78 @@ class LogicPainter extends CustomPainter {
     for (int i = 0; i < components.length; i++) {
       final component = components[i].copyWith(pos: components[i].pos + panOffset);
 
-      canvas.drawRect(
-        Rect.fromPoints(
-          component.pos,
-          Offset(component.size.width, component.size.height) + component.pos,
-        ),
-        rectPaint,
-      );
-
-      drawIOs(canvas, component.inputs, component.pos, true);
-      drawIOs(canvas, [component.output], component.pos, false);
-
-      drawTitle(canvas, component);
+      switch (components[i].viewType) {
+        case ComponentViewType.basicPart:
+          drawBasicViewComponent(canvas, component);
+        case ComponentViewType.controlledSwitch:
+          drawSwitchViewComponent(canvas, component);
+        case ComponentViewType.bitOutput:
+          drawBitOutputViewComponent(canvas, component);
+      }
     }
+  }
+
+  void drawBasicViewComponent(Canvas canvas, DiscreteComponent component) {
+    canvas.drawRect(
+      Rect.fromPoints(
+        component.pos,
+        Offset(component.size.width, component.size.height) + component.pos,
+      ),
+      rectPaint,
+    );
+
+    drawIOs(canvas, component.inputs, component.pos, true);
+    drawIOs(canvas, [component.output], component.pos, false);
+
+    drawTitle(canvas, component, Colors.redAccent);
+  }
+
+  void drawSwitchViewComponent(Canvas canvas, DiscreteComponent component) {
+    canvas.drawRect(
+      Rect.fromPoints(
+        component.pos,
+        Offset(component.size.width, component.size.height) + component.pos,
+      ),
+      rectPaint,
+    );
+
+    const pad = Offset(4, 4);
+    canvas.drawRect(
+      Rect.fromPoints(
+        component.pos + pad,
+        Offset(component.size.width, component.size.height) + component.pos - pad,
+      ),
+      component.state == 0 ? lowPaint : highPaint,
+    );
+
+    // drawIOs(canvas, component.inputs, component.pos, true);
+    drawIOs(canvas, [component.output], component.pos, false);
+
+    drawTitle(canvas, component, Colors.black);
+  }
+
+  void drawBitOutputViewComponent(Canvas canvas, DiscreteComponent component) {
+    canvas.drawRect(
+      Rect.fromPoints(
+        component.pos,
+        Offset(component.size.width, component.size.height) + component.pos,
+      ),
+      rectPaint,
+    );
+
+    const pad = Offset(4, 4);
+    canvas.drawRect(
+      Rect.fromPoints(
+        component.pos + pad,
+        Offset(component.size.width, component.size.height) + component.pos - pad,
+      ),
+      component.state == 0 ? lowPaint : highPaint,
+    );
+
+    drawIOs(canvas, component.inputs, component.pos, true);
+    // drawIOs(canvas, [component.output], component.pos, false);
+
+    drawTitle(canvas, component, Colors.black);
   }
 
   void drawIOs(Canvas canvas, List<IO> ios, Offset partPos, bool isInput) {
@@ -123,9 +174,9 @@ class LogicPainter extends CustomPainter {
     canvas.drawCircle(pos, 6, paint);
   }
 
-  void drawTitle(Canvas canvas, DiscreteComponent component) {
-    const textStyle = TextStyle(
-      color: Colors.redAccent,
+  void drawTitle(Canvas canvas, DiscreteComponent component, Color color) {
+    final textStyle = TextStyle(
+      color: color,
       fontSize: 24,
       fontWeight: FontWeight.bold,
     );

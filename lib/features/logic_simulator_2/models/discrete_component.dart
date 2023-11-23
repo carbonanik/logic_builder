@@ -10,12 +10,19 @@ enum DiscreteComponentType {
   or,
   nor,
   controlled,
+  output,
+}
+
+enum ComponentViewType {
+  basicPart,
+  controlledSwitch,
+  bitOutput,
 }
 
 class DiscreteComponent {
-  // final String id;
   final IO output;
   final DiscreteComponentType type;
+  final ComponentViewType viewType;
   final String name;
   final List<IO> inputs;
   final int state;
@@ -23,20 +30,20 @@ class DiscreteComponent {
   final Size size;
 
   DiscreteComponent({
-    // required this.id,
     required this.output,
     required this.inputs,
     required this.name,
     required this.type,
+    required this.viewType,
     required this.state,
     required this.pos,
     required this.size,
   });
 
   DiscreteComponent copyWith({
-    // String? id,
     IO? output,
     DiscreteComponentType? type,
+    ComponentViewType? viewType,
     String? name,
     List<IO>? inputs,
     int? state,
@@ -44,9 +51,9 @@ class DiscreteComponent {
     Size? size,
   }) {
     return DiscreteComponent(
-      // id: id ?? this.id,
       output: output ?? this.output,
       type: type ?? this.type,
+      viewType: viewType ?? this.viewType,
       name: name ?? this.name,
       inputs: inputs ?? this.inputs,
       state: state ?? this.state,
@@ -86,6 +93,7 @@ DiscreteComponent createDiscreteComponent({
   required Offset pos,
   required String name,
   required DiscreteComponentType type,
+  required ComponentViewType viewType,
 }) {
   final double height = _calculateHeight(inputIds.isEmpty ? 1 : inputIds.length);
   final double width = _calculateWidth(name);
@@ -98,10 +106,10 @@ DiscreteComponent createDiscreteComponent({
   );
 
   return DiscreteComponent(
-    // id: outputId,
     output: output,
     inputs: inputs,
     type: type,
+    viewType: viewType,
     name: name,
     pos: pos,
     size: size,
@@ -150,6 +158,7 @@ DiscreteComponent createNotComponent() {
     pos: Offset.zero,
     name: "NOT",
     type: DiscreteComponentType.not,
+    viewType: ComponentViewType.basicPart,
   );
 }
 
@@ -164,6 +173,7 @@ DiscreteComponent createAndComponent() {
     pos: Offset.zero,
     name: "AND",
     type: DiscreteComponentType.and,
+    viewType: ComponentViewType.basicPart,
   );
 }
 
@@ -178,6 +188,7 @@ DiscreteComponent createOrComponent() {
     pos: Offset.zero,
     name: "OR",
     type: DiscreteComponentType.or,
+    viewType: ComponentViewType.basicPart,
   );
 }
 
@@ -192,6 +203,7 @@ DiscreteComponent createNandComponent() {
     pos: Offset.zero,
     name: "NAND",
     type: DiscreteComponentType.nand,
+    viewType: ComponentViewType.basicPart,
   );
 }
 
@@ -206,6 +218,7 @@ DiscreteComponent createNorComponent() {
     pos: Offset.zero,
     name: "NOR",
     type: DiscreteComponentType.nor,
+    viewType: ComponentViewType.basicPart,
   );
 }
 
@@ -216,9 +229,24 @@ DiscreteComponent createControlledComponent() {
     inputIds: [],
     outputId: ownId,
     pos: Offset.zero,
-    name: "Ctrl",
+    name: "In",
     type: DiscreteComponentType.controlled,
+    viewType: ComponentViewType.controlledSwitch,
   ).copyWith(state: 1);
+}
+
+DiscreteComponent createOutputComponent() {
+  final inAId = const Uuid().v4();
+  final ownId = const Uuid().v4();
+
+  return createDiscreteComponent(
+    inputIds: [inAId],
+    outputId: ownId,
+    pos: Offset.zero,
+    name: "Out",
+    type: DiscreteComponentType.output,
+    viewType: ComponentViewType.bitOutput,
+  );
 }
 
 DiscreteComponent createComponent(DiscreteComponentType type) {
@@ -235,5 +263,7 @@ DiscreteComponent createComponent(DiscreteComponentType type) {
       return createNorComponent();
     case DiscreteComponentType.controlled:
       return createControlledComponent();
+    case DiscreteComponentType.output:
+      return createOutputComponent();
   }
 }

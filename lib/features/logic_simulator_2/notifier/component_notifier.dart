@@ -143,6 +143,10 @@ class ComponentNotifier extends ChangeNotifier {
 
     for (var component in _components) {
       switch (component.type) {
+        case DiscreteComponentType.output:
+          final a = _componentLookup[component.inputs[0].id]?.state;
+          _componentLookup[component.output.id] = component.copyWith(state: a ?? 0);
+          break;
         case DiscreteComponentType.controlled:
           break;
         case DiscreteComponentType.and:
@@ -158,7 +162,7 @@ class ComponentNotifier extends ChangeNotifier {
           _componentLookup[component.output.id] = binaryOp(nor, component);
           break;
         case DiscreteComponentType.not:
-          final a = _componentLookup[component.inputs[0]]?.state;
+          final a = _componentLookup[component.inputs[0].id]?.state;
           _componentLookup[component.output.id] = component.copyWith(state: not(a ?? 0));
           break;
       }
