@@ -64,6 +64,32 @@ class ComponentNotifier extends ChangeNotifier {
     return ioData;
   }
 
+  DiscreteComponent? isMousePointerOnComponent() {
+    DiscreteComponent? component;
+    final mousePos = _ref.read(cursorPositionProvider);
+    for (var i = 0; i < components.length; i++) {
+      component = components[i];
+      final topLeft = component.pos;
+      final bottomRight = component.pos + Offset(component.size.width, component.size.height);
+      if (mousePos.dx >= topLeft.dx &&
+          mousePos.dx <= bottomRight.dx &&
+          mousePos.dy >= topLeft.dy &&
+          mousePos.dy <= bottomRight.dy) return component;
+    }
+    return null;
+  }
+
+  void toggleControlled(){
+    final component = isMousePointerOnComponent();
+    if (component == null) return;
+    if (component.type != DiscreteComponentType.controlled) return;
+    final newComponent = component.copyWith(
+      state: component.state == 1 ? 0 : 1,
+    );
+
+    _update(component, newComponent);
+  }
+
   MatchedIoData? _matchedIO(List<IO> ios, Offset componentPos) {
     final cursorPos = _ref.read(cursorPositionProvider);
     for (var i = 0; i < ios.length; i++) {
@@ -102,13 +128,13 @@ class ComponentNotifier extends ChangeNotifier {
   void _runLogics() {
     const evalPerStep = 5;
     for (var j = 0; j < evalPerStep; j++) {
-      evaluate();
+      _evaluate();
     }
     _components.clear();
     _components.addAll(_componentLookup.values);
   }
 
-  evaluate() {
+  void _evaluate() {
     DiscreteComponent binaryOp(int Function(int, int) logicFn, DiscreteComponent component) {
       final a = _componentLookup[component.inputs[0].id]?.state;
       final b = _componentLookup[component.inputs[1].id]?.state;

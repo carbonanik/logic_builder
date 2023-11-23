@@ -100,24 +100,23 @@ class _LogicCanvasWidgetState extends State<CanvasPage> {
                 child: Row(
                   children: [
                     IconButton(
+                      color: mode == Mode.view ? Colors.blue : null,
+                      onPressed: () {
+                          ref.read(drawingModeProvider.notifier).state = Mode.view;
+                      },
+                      icon: const Icon(Icons.view_cozy),
+                    ),
+                    IconButton(
                       color: mode == Mode.component ? Colors.blue : null,
                       onPressed: () {
-                        if (mode == Mode.component) {
-                          ref.read(drawingModeProvider.notifier).state = Mode.view;
-                        } else {
                           ref.read(drawingModeProvider.notifier).state = Mode.component;
-                        }
                       },
                       icon: const Icon(Icons.comment_bank),
                     ),
                     IconButton(
                       color: mode == Mode.wire ? Colors.blue : null,
                       onPressed: () {
-                        if (mode == Mode.wire) {
-                          ref.read(drawingModeProvider.notifier).state = Mode.view;
-                        } else {
                           ref.read(drawingModeProvider.notifier).state = Mode.wire;
-                        }
                       },
                       icon: const Icon(Icons.line_axis),
                     ),

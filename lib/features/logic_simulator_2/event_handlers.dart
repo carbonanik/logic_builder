@@ -29,7 +29,9 @@ class EventsHandler {
   void handleOnTapDown(TapDownDetails details) {
     final mode = ref.read(drawingModeProvider);
     final localPosition = _excludePanOffset(details.localPosition);
-    if (mode == Mode.wire) {
+    if (mode == Mode.view) {
+      ref.read(componentsProvider.notifier).toggleControlled();
+    } else if (mode == Mode.wire) {
       ref.read(wiresProvider.notifier).addWire(localPosition);
     } else if (mode == Mode.component) {
       ref.read(componentsProvider).addComponent(localPosition);
@@ -40,7 +42,6 @@ class EventsHandler {
     final panOffset = ref.read(panOffsetProvider);
     return localPosition - panOffset;
   }
-
 
   Offset getPoint(Offset location, Offset lastPoint) {
     final straightLine = ref.read(isControlPressed);
@@ -60,8 +61,6 @@ class EventsHandler {
       return Offset(lastPoint.dx, location.dy);
     }
   }
-
-
 
   void wireDrawingEnd() {
     ref.read(isDrawingWire.notifier).state = false;
