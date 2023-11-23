@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:week_task/features/logic_simulator_2/models/discrete_component_type.dart';
 import 'package:week_task/features/logic_simulator_2/painter/logic_painter.dart';
 import 'package:week_task/features/logic_simulator_2/painter/wire_painter.dart';
 import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';

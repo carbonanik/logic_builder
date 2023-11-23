@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:week_task/features/logic_simulator_2/canvas_page.dart';
 import 'package:week_task/features/rich_text/rich_text_example.dart';
-import 'package:week_task/features/logic_simulator/logic_canvas.dart';
 import 'package:week_task/pages/nested_todo_list.dart';
 
 class ExperimentListPage extends StatelessWidget {
@@ -39,7 +39,7 @@ class ExperimentListPage extends StatelessWidget {
             FilledButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const LogicCanvasWidget();
+                  return const CanvasPage();
                 }));
               },
               child: const Text("Logic Canvas"),

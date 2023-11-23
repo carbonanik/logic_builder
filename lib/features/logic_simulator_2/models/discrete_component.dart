@@ -2,22 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:week_task/features/logic_simulator_2/models/component_view_type.dart';
+import 'package:week_task/features/logic_simulator_2/models/discrete_component_type.dart';
+import 'package:week_task/features/logic_simulator_2/models/io.dart';
 
-enum DiscreteComponentType {
-  not,
-  and,
-  nand,
-  or,
-  nor,
-  controlled,
-  output,
-}
 
-enum ComponentViewType {
-  basicPart,
-  controlledSwitch,
-  bitOutput,
-}
+
 
 class DiscreteComponent {
   final IO output;
@@ -59,30 +49,6 @@ class DiscreteComponent {
       state: state ?? this.state,
       pos: pos ?? this.pos,
       size: size ?? this.size,
-    );
-  }
-}
-
-class IO {
-  final String name;
-  final Offset pos;
-  final String id;
-
-  IO({
-    required this.id,
-    required this.name,
-    required this.pos,
-  });
-
-  IO copyWith({
-    String? id,
-    String? name,
-    Offset? pos,
-  }) {
-    return IO(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      pos: pos ?? this.pos,
     );
   }
 }
@@ -232,7 +198,7 @@ DiscreteComponent createControlledComponent() {
     name: "In",
     type: DiscreteComponentType.controlled,
     viewType: ComponentViewType.controlledSwitch,
-  ).copyWith(state: 1);
+  );
 }
 
 DiscreteComponent createOutputComponent() {

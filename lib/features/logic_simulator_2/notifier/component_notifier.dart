@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:week_task/features/logic_simulator_2/models/discrete_component.dart';
+import 'package:week_task/features/logic_simulator_2/models/discrete_component_type.dart';
+import 'package:week_task/features/logic_simulator_2/models/io.dart';
 import 'package:week_task/features/logic_simulator_2/models/matched_io.dart';
 import 'package:week_task/features/logic_simulator_2/models/pair.dart';
 import 'package:week_task/features/logic_simulator_2/provider/component_provider.dart';
