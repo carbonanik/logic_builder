@@ -95,55 +95,57 @@ class ComponentNotifier extends ChangeNotifier {
   }
 
   void _noChange() {
-    // _runLogics();
+    _runLogics();
     notifyListeners();
   }
 
-  // void _runLogics() {
-  //   const evalPerStep = 5;
-  //   for (var j = 0; j < evalPerStep; j++) {
-      // evaluate(componentLookup);
-  //   }
-  // }
+  void _runLogics() {
+    const evalPerStep = 5;
+    for (var j = 0; j < evalPerStep; j++) {
+      evaluate();
+    }
+    _components.clear();
+    _components.addAll(_componentLookup.values);
+  }
+
+  evaluate() {
+    DiscreteComponent binaryOp(int Function(int, int) logicFn, DiscreteComponent component) {
+      final a = _componentLookup[component.inputs[0].id]?.state;
+      final b = _componentLookup[component.inputs[1].id]?.state;
+      return component.copyWith(state: logicFn(a ?? 0, b ?? 0));
+    }
+
+    for (var component in _components) {
+      switch (component.type) {
+        case DiscreteComponentType.controlled:
+          break;
+        case DiscreteComponentType.and:
+          _componentLookup[component.output.id] = binaryOp(and, component);
+          break;
+        case DiscreteComponentType.nand:
+          _componentLookup[component.output.id] = binaryOp(nand, component);
+          break;
+        case DiscreteComponentType.or:
+          _componentLookup[component.output.id] = binaryOp(or, component);
+          break;
+        case DiscreteComponentType.nor:
+          _componentLookup[component.output.id] = binaryOp(nor, component);
+          break;
+        case DiscreteComponentType.not:
+          final a = _componentLookup[component.inputs[0]]?.state;
+          _componentLookup[component.output.id] = component.copyWith(state: not(a ?? 0));
+          break;
+      }
+    }
+  }
 }
 
-// evaluate(Map<String, DiscreteComponent> componentsMap) {
-//   DiscreteComponent binaryOp(int Function(int, int) logicFn, DiscreteComponent component) {
-//     final a = componentsMap[component.inputs[0]]?.state;
-//     final b = componentsMap[component.inputs[1]]?.state;
-//     return component.copyWith(state: logicFn(a ?? 0, b ?? 0));
-//   }
+int not(int a) => ~a & 1;
 
-  // for (var component in componentsMap.values) {
-  //   switch (component.type) {
-  //     case DiscreteComponentType.controlled:
-  //       break;
-  //     case DiscreteComponentType.and:
-  //       componentsMap[component.output.id] = binaryOp(and, component);
-  //       break;
-  //     case DiscreteComponentType.nand:
-  //       componentsMap[component.output.id] = binaryOp(nand, component);
-  //       break;
-  //     case DiscreteComponentType.or:
-  //       componentsMap[component.output.id] = binaryOp(or, component);
-  //       break;
-  //     case DiscreteComponentType.nor:
-  //       componentsMap[component.output.id] = binaryOp(nor, component);
-  //       break;
-  //     case DiscreteComponentType.not:
-  //       final a = componentsMap[component.inputs[0]]?.state;
-  //       componentsMap[component.output.id] = component.copyWith(state: not(a ?? 0));
-  //       break;
-  //   }
-  // }
-// }
+int and(int a, int b) => a & b;
 
-// int not(int a) => ~a & 1;
-//
-// int and(int a, int b) => a & b;
-//
-// int nand(int a, int b) => not(and(a, b));
-//
-// int or(int a, int b) => a | b;
-//
-// int nor(int a, int b) => not(or(a, b));
+int nand(int a, int b) => not(and(a, b));
+
+int or(int a, int b) => a | b;
+
+int nor(int a, int b) => not(or(a, b));
