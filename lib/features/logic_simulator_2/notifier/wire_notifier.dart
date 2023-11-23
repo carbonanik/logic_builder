@@ -38,9 +38,20 @@ class WireNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeWire(Wire wire) {
+    _wires.remove(wire);
+    _wiresLookup.remove(wire.id);
+    notifyListeners();
+  }
+
   void _addNewWire() {
     final ioData = _ref.read(componentsProvider).isMousePointerOnIO();
     if (ioData == null) return;
+
+    // do not add wire if the input is already connected
+    if (ioData.startFromInput) {
+      if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null) return;
+    }
     final id = const Uuid().v4();
     _ref.read(currentDrawingWireIdProvider.notifier).state = id;
     _add(
@@ -48,6 +59,8 @@ class WireNotifier extends ChangeNotifier {
         id: id,
         points: [ioData.globalPos],
         connectionId: ioData.ioId,
+        startComponentId: ioData.componentId,
+        startFromInput: ioData.startFromInput,
       ),
     );
   }
@@ -56,10 +69,40 @@ class WireNotifier extends ChangeNotifier {
     final currentWire = _wiresLookup[_ref.read(currentDrawingWireIdProvider)];
     if (currentWire == null) return;
 
+    // get io data that is clicked
     final MatchedIoData? ioData = _ref.read(componentsProvider).isMousePointerOnIO();
+    // is clicked on IO ? if it is maybe the wire ends
+
     if (ioData != null) {
-      currentWire.addPoint(ioData.globalPos);
-      _ref.read(eventHandlerProvider).wireDrawingEnd();
+      // do not add point if started and ended from the only input or output
+      if (ioData.startFromInput == currentWire.startFromInput) return;
+
+
+
+      // replace io id
+      if (currentWire.startFromInput) { // started from input ending at output
+        final componentId = currentWire.startComponentId;
+        final ioId = currentWire.connectionId;
+        final replacedIoId = ioData.ioId;
+
+        // ending the wire
+        currentWire.addPoint(ioData.globalPos);
+        _ref.read(eventHandlerProvider).wireDrawingEnd();
+
+        _ref.read(componentsProvider).replaceInputIo(componentId, ioId, replacedIoId);
+      } else { // started from output ending at input
+        // already have a wire connected to the input
+        if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null) return;
+        final componentId = ioData.componentId;
+        final ioId = ioData.ioId;
+        final replacedIoId = currentWire.connectionId;
+
+        // ending the wire
+        currentWire.addPoint(ioData.globalPos);
+        _ref.read(eventHandlerProvider).wireDrawingEnd();
+
+        _ref.read(componentsProvider).replaceInputIo(componentId, ioId, replacedIoId);
+      }
     } else {
       currentWire.addPoint(
         _ref.read(eventHandlerProvider).getPoint(

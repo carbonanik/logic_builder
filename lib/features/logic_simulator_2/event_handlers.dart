@@ -67,4 +67,12 @@ class EventsHandler {
     ref.read(isDrawingWire.notifier).state = false;
     ref.read(currentDrawingWireIdProvider.notifier).state = null;
   }
+
+  void wireDiscard() {
+    final currentWire = ref.read(currentWireProvider);
+    ref.read(isDrawingWire.notifier).state = false;
+    ref.read(currentDrawingWireIdProvider.notifier).state = null;
+    if (currentWire == null) return;
+    ref.read(wiresProvider).removeWire(currentWire);
+  }
 }

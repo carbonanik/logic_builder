@@ -56,7 +56,7 @@ class _LogicCanvasWidgetState extends State<CanvasPage> {
                 focusNode: keyboardFocusNode,
                 onKey: (value) {
                   if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.escape) {
-                    eventHandler.wireDrawingEnd();
+                    eventHandler.wireDiscard();
                     ref.read(selectedComponentProvider.notifier).state = null;
                   } else if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
                     ref.read(isControlPressed.notifier).state = true;

@@ -65,7 +65,7 @@ class LogicPainter extends CustomPainter {
     if (selectedComponent != null && drawingComponent) {
       canvas.drawRect(
         Rect.fromPoints(
-          const Offset(0, 0) + cursorPos,
+          Offset.zero + cursorPos,
           Offset(selectedComponent!.size.width, selectedComponent!.size.height) + cursorPos,
         ),
         rectPaint,

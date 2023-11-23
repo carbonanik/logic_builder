@@ -7,6 +7,8 @@ class Wire {
   final double width;
   final Paint paint;
   final String connectionId;
+  final String startComponentId;
+  final bool startFromInput;
 
   bool isCompleted = true;
 
@@ -16,6 +18,8 @@ class Wire {
     this.color = Colors.brown,
     this.width = 3,
     required this.connectionId,
+    required this.startComponentId,
+    required this.startFromInput,
   })  : _points = points,
         paint = Paint()
           ..color = color
@@ -27,20 +31,20 @@ class Wire {
     _points.add(point);
   }
 
-  Wire copyWith({
-    String? connectionId,
-    List<Offset>? points,
-    Color? color,
-    double? width,
-  }) {
-    return Wire(
-      id: id,
-      connectionId: connectionId ?? this.connectionId,
-      points: points ?? _points,
-      color: color ?? this.color,
-      width: width ?? this.width,
-    );
-  }
+  // Wire copyWith({
+  //   String? connectionId,
+  //   List<Offset>? points,
+  //   Color? color,
+  //   double? width,
+  // }) {
+  //   return Wire(
+  //     id: id,
+  //     connectionId: connectionId ?? this.connectionId,
+  //     points: points ?? _points,
+  //     color: color ?? this.color,
+  //     width: width ?? this.width,
+  //   );
+  // }
 
   Offset get last => _points.last;
 

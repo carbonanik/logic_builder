@@ -21,10 +21,17 @@ class ComponentNotifier extends ChangeNotifier {
 
   UnmodifiableMapView<String, DiscreteComponent> get componentLookup => UnmodifiableMapView(_componentLookup);
 
-  void _add(DiscreteComponent component) {
-    _components.add(component);
-    _componentLookup[component.output.id] = component;
-    notifyListeners();
+  void replaceInputIo(String componentId, String ioId, String replacedIoId) {
+    final component = _componentLookup[componentId];
+    if (component == null) return;
+    final inputs = component.inputs;
+    for (var i = 0; i < component.inputs.length; i++) {
+      if (inputs[i].id == ioId) {
+        inputs[i] = inputs[i].copyWith(id: replacedIoId);
+      }
+    }
+    final newComponent = component.copyWith(inputs: inputs);
+    _update(component, newComponent);
   }
 
   void addComponent(Offset localPosition) {
@@ -42,13 +49,17 @@ class ComponentNotifier extends ChangeNotifier {
   MatchedIoData? isMousePointerOnIO() {
     MatchedIoData? ioData;
     for (var component in components) {
-      ioData = _matchedIO(component.inputs, component.pos);
+      ioData = _matchedIO(component.inputs, component.pos)?.copyWith(
+        componentId: component.output.id,
+        startFromInput: true,
+      );
       if (ioData != null) break;
-      ioData = _matchedIO([component.output], component.pos);
+      ioData = _matchedIO([component.output], component.pos)?.copyWith(
+        componentId: component.output.id,
+        startFromInput: false,
+      );
+
       if (ioData != null) break;
-    }
-    if (ioData == null) {
-      return null;
     }
     return ioData;
   }
@@ -64,9 +75,75 @@ class ComponentNotifier extends ChangeNotifier {
           ioId: ios[i].id,
           globalPos: globalPos,
           componentId: '',
+          startFromInput: true,
         );
       }
     }
     return null;
   }
+
+  void _add(DiscreteComponent component) {
+    _components.add(component);
+    _componentLookup[component.output.id] = component;
+    _noChange();
+  }
+
+  void _update(DiscreteComponent component, DiscreteComponent newComponent) {
+    _components[_components.indexOf(component)] = newComponent;
+    _componentLookup[component.output.id] = newComponent;
+    _noChange();
+  }
+
+  void _noChange() {
+    // _runLogics();
+    notifyListeners();
+  }
+
+  // void _runLogics() {
+  //   const evalPerStep = 5;
+  //   for (var j = 0; j < evalPerStep; j++) {
+      // evaluate(componentLookup);
+  //   }
+  // }
 }
+
+// evaluate(Map<String, DiscreteComponent> componentsMap) {
+//   DiscreteComponent binaryOp(int Function(int, int) logicFn, DiscreteComponent component) {
+//     final a = componentsMap[component.inputs[0]]?.state;
+//     final b = componentsMap[component.inputs[1]]?.state;
+//     return component.copyWith(state: logicFn(a ?? 0, b ?? 0));
+//   }
+
+  // for (var component in componentsMap.values) {
+  //   switch (component.type) {
+  //     case DiscreteComponentType.controlled:
+  //       break;
+  //     case DiscreteComponentType.and:
+  //       componentsMap[component.output.id] = binaryOp(and, component);
+  //       break;
+  //     case DiscreteComponentType.nand:
+  //       componentsMap[component.output.id] = binaryOp(nand, component);
+  //       break;
+  //     case DiscreteComponentType.or:
+  //       componentsMap[component.output.id] = binaryOp(or, component);
+  //       break;
+  //     case DiscreteComponentType.nor:
+  //       componentsMap[component.output.id] = binaryOp(nor, component);
+  //       break;
+  //     case DiscreteComponentType.not:
+  //       final a = componentsMap[component.inputs[0]]?.state;
+  //       componentsMap[component.output.id] = component.copyWith(state: not(a ?? 0));
+  //       break;
+  //   }
+  // }
+// }
+
+// int not(int a) => ~a & 1;
+//
+// int and(int a, int b) => a & b;
+//
+// int nand(int a, int b) => not(and(a, b));
+//
+// int or(int a, int b) => a | b;
+//
+// int nor(int a, int b) => not(or(a, b));
