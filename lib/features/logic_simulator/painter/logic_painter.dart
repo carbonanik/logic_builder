@@ -7,16 +7,16 @@ class LogicPainter extends CustomPainter {
   final List<DiscreteComponent> components;
   final Map<String, DiscreteComponent> componentLookup;
   final Offset cursorPos;
-  final DiscreteComponent? selectedComponent;
-  final bool drawingComponent;
+  // final DiscreteComponent? selectedComponent;
+  // final bool drawingComponent;
   final Offset panOffset;
 
   LogicPainter({
     required this.components,
     required this.componentLookup,
     required this.cursorPos,
-    required this.selectedComponent,
-    required this.drawingComponent,
+    // required this.selectedComponent,
+    // required this.drawingComponent,
     required this.panOffset,
   });
 
@@ -46,7 +46,6 @@ class LogicPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    drawCurrentComponent(canvas, size);
     drawComponent(canvas, size);
   }
 
@@ -55,19 +54,6 @@ class LogicPainter extends CustomPainter {
     return true;
   }
 
-  void drawCurrentComponent(Canvas canvas, Size size) {
-    if (selectedComponent != null && drawingComponent) {
-      canvas.drawRect(
-        Rect.fromPoints(
-          Offset.zero + cursorPos,
-          Offset(selectedComponent!.size.width, selectedComponent!.size.height) + cursorPos,
-        ),
-        rectPaint,
-      );
-
-      drawTitle(canvas, selectedComponent!.copyWith(pos: cursorPos), Colors.redAccent);
-    }
-  }
 
   void drawComponent(Canvas canvas, Size size) {
     for (int i = 0; i < components.length; i++) {
