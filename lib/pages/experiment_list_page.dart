@@ -39,7 +39,7 @@ class ExperimentListPage extends StatelessWidget {
             FilledButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const CanvasPage();
+                  return  CanvasPage();
                 }));
               },
               child: const Text("Logic Canvas"),

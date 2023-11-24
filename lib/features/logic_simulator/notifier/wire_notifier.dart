@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:week_task/features/logic_simulator/models/matched_io.dart';
-import 'package:week_task/features/logic_simulator/models/pair.dart';
 import 'package:week_task/features/logic_simulator/models/wire.dart';
 import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
 import 'package:week_task/features/logic_simulator/provider/event_handler_provider.dart';
@@ -25,7 +24,19 @@ class WireNotifier extends ChangeNotifier {
   void _add(Wire wire) {
     _wires.add(wire);
     _wiresLookup[wire.id] = wire;
-    // notifyListeners();
+    notifyListeners();
+  }
+
+  void _remove(Wire wire) {
+    _wires.remove(wire);
+    _wiresLookup.remove(wire.id);
+    notifyListeners();
+  }
+
+  void _update(Wire wire, Wire newWire) {
+    _wires[_wires.indexOf(wire)] = newWire;
+    _wiresLookup[wire.id] = newWire;
+    notifyListeners();
   }
 
   void addWire(Offset localPosition) {
@@ -35,13 +46,17 @@ class WireNotifier extends ChangeNotifier {
     } else {
       _addPointToCurrentWire(localPosition);
     }
-    notifyListeners();
   }
 
-  void removeWire(Wire wire) {
-    _wires.remove(wire);
-    _wiresLookup.remove(wire.id);
-    notifyListeners();
+  void removeWire(String wireId) {
+    if (_wiresLookup.containsKey(wireId)) {
+      final wire = _wiresLookup[wireId]!;
+      _ref.read(componentsProvider).removeWireIDFromComponentIO(wire.startComponentId, wireId);
+      if (wire.endComponentId?.isNotEmpty == true) {
+        _ref.read(componentsProvider).removeWireIDFromComponentIO(wire.endComponentId!, wireId);
+      }
+      _remove(_wiresLookup[wireId]!);
+    }
   }
 
   void _addNewWire() {
@@ -63,6 +78,9 @@ class WireNotifier extends ChangeNotifier {
         startFromInput: ioData.startFromInput,
       ),
     );
+
+    // store wire id in the io
+    _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, id);
   }
 
   void _addPointToCurrentWire(Offset localPosition) {
@@ -88,7 +106,13 @@ class WireNotifier extends ChangeNotifier {
         currentWire.addPoint(ioData.globalPos);
         _ref.read(eventHandlerProvider).wireDrawingEnd();
 
-        _ref.read(componentsProvider).replaceInputIo(componentId, ioId, replacedIoId);
+        // store wire id in the io
+        _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
+
+        // replace the id with the output id that is connected
+        _ref.read(componentsProvider).changeInputIoId(componentId, ioId, replacedIoId);
+
+        wireEndComponent(currentWire.id, ioData.componentId);
       } else {
         // started from output ending at input
         // already have a wire connected to the input
@@ -101,7 +125,12 @@ class WireNotifier extends ChangeNotifier {
         currentWire.addPoint(ioData.globalPos);
         _ref.read(eventHandlerProvider).wireDrawingEnd();
 
-        _ref.read(componentsProvider).replaceInputIo(componentId, ioId, replacedIoId);
+        // store wire id in the io
+        _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
+
+        _ref.read(componentsProvider).changeInputIoId(componentId, ioId, replacedIoId);
+
+        wireEndComponent(currentWire.id, ioData.componentId);
       }
     } else {
       currentWire.addPoint(
@@ -111,5 +140,28 @@ class WireNotifier extends ChangeNotifier {
             ),
       );
     }
+  }
+
+  void wireEndComponent(String wireID, String componentId) {
+    final wire = _wiresLookup[wireID];
+    if (wire == null) return;
+    final newWire = wire.copyWith(
+      endComponentId: componentId,
+    );
+
+    _update(wire, newWire);
+  }
+
+  void removeWires(List<String> ids) {
+    for (var id in ids) {
+      removeWire(id);
+    }
+  }
+
+  bool deleteMouseOverWire() {
+    final ioData = _ref.read(componentsProvider).isMousePointerOnIO();
+    if (ioData == null) return false;
+    removeWires(ioData.matchedIO.connectedWireIds ?? []);
+    return true;
   }
 }

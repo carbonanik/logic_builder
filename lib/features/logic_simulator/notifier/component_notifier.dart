@@ -2,14 +2,14 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import 'package:week_task/features/logic_simulator/models/discrete_component.dart';
 import 'package:week_task/features/logic_simulator/models/discrete_component_type.dart';
 import 'package:week_task/features/logic_simulator/models/io.dart';
 import 'package:week_task/features/logic_simulator/models/matched_io.dart';
-import 'package:week_task/features/logic_simulator/models/pair.dart';
-import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
 import 'package:week_task/features/logic_simulator/provider/cursor_position_state_provider.dart';
 import 'package:week_task/features/logic_simulator/provider/selected_component_provider.dart';
+import 'package:week_task/features/logic_simulator/provider/wires_provider.dart';
 
 class ComponentNotifier extends ChangeNotifier {
   final Ref _ref;
@@ -23,7 +23,7 @@ class ComponentNotifier extends ChangeNotifier {
 
   UnmodifiableMapView<String, DiscreteComponent> get componentLookup => UnmodifiableMapView(_componentLookup);
 
-  void replaceInputIo(String componentId, String ioId, String replacedIoId) {
+  void changeInputIoId(String componentId, String ioId, String replacedIoId) {
     final component = _componentLookup[componentId];
     if (component == null) return;
     final inputs = component.inputs;
@@ -46,6 +46,28 @@ class ComponentNotifier extends ChangeNotifier {
       pos: localPosition,
     );
     _add(comp);
+  }
+
+  void removeWireIDFromComponentIO(String componentId, String wireId) {
+    final component = _componentLookup[componentId];
+    final inputs = component?.inputs;
+    for (var i = 0; i < (inputs?.length ?? 0); i++) {
+      if (inputs?[i].connectedWireIds?.contains(wireId) == true) {
+        inputs![i] = inputs[i].copyWith(
+          connectedWireIds: inputs[i].connectedWireIds!.where((element) => element != wireId).toList(),
+          id: const Uuid().v4(),
+        );
+      }
+    }
+    var output = component?.output;
+    if (output?.connectedWireIds?.contains(wireId) == true) {
+      output = output?.copyWith(
+        connectedWireIds: output.connectedWireIds!.where((element) => element != wireId).toList(),
+        id: const Uuid().v4(),
+      );
+    }
+    final newComponent = component?.copyWith(inputs: inputs, output: output);
+    _update(component!, newComponent!);
   }
 
   MatchedIoData? isMousePointerOnIO() {
@@ -92,6 +114,36 @@ class ComponentNotifier extends ChangeNotifier {
     _update(component, newComponent);
   }
 
+  bool deleteMouseOverComponent() {
+    final component = isMousePointerOnComponent();
+    if (component == null) return false;
+    final ios = component.inputs + [component.output];
+    final wiresIds = <String>{};
+    for (var element in ios) {
+      wiresIds.addAll(element.connectedWireIds ?? []);
+    }
+    _ref.read(wiresProvider).removeWires(wiresIds.toList());
+    _delete(component);
+    return true;
+  }
+
+  void connectIOToWire(String componentId, String ioId, String wireId) {
+    final component = _componentLookup[componentId];
+    if (component == null) return;
+    final inputs = component.inputs;
+    for (var i = 0; i < component.inputs.length; i++) {
+      if (component.inputs[i].id == ioId) {
+        inputs[i] = inputs[i].copyWith(connectedWireIds: (inputs[i].connectedWireIds ?? [])..add(wireId));
+      }
+    }
+    var output = component.output;
+    if (output.id == ioId) {
+      output = output.copyWith(connectedWireIds: (output.connectedWireIds ?? [])..add(wireId));
+    }
+    final newComponent = component.copyWith(inputs: inputs, output: output);
+    _update(component, newComponent);
+  }
+
   MatchedIoData? _matchedIO(List<IO> ios, Offset componentPos) {
     final cursorPos = _ref.read(cursorPositionProvider);
     for (var i = 0; i < ios.length; i++) {
@@ -104,6 +156,7 @@ class ComponentNotifier extends ChangeNotifier {
           globalPos: globalPos,
           componentId: '',
           startFromInput: true,
+          matchedIO: ios[i].copyWith(),
         );
       }
     }
@@ -119,6 +172,12 @@ class ComponentNotifier extends ChangeNotifier {
   void _update(DiscreteComponent component, DiscreteComponent newComponent) {
     _components[_components.indexOf(component)] = newComponent;
     _componentLookup[component.output.id] = newComponent;
+    _noChange();
+  }
+
+  void _delete(DiscreteComponent component) {
+    _components.remove(component);
+    _componentLookup.remove(component.output.id);
     _noChange();
   }
 

@@ -9,42 +9,42 @@ import 'package:week_task/features/logic_simulator/provider/wire_drawing_provide
 import 'package:week_task/features/logic_simulator/provider/wires_provider.dart';
 
 class EventsHandler {
-  final Ref ref;
+  final Ref _ref;
 
-  EventsHandler(this.ref);
+  EventsHandler(this._ref);
 
   void handlePointerHover(PointerHoverEvent event) {
-    final currentWireID = ref.read(currentDrawingWireIdProvider);
+    final currentWireID = _ref.read(currentDrawingWireIdProvider);
     final localPosition = _excludePanOffset(event.localPosition);
     if (currentWireID != null) {
-      final currentWire = ref.read(currentWireProvider)!;
+      final currentWire = _ref.read(currentWireProvider)!;
       final cursorPos = getPoint(localPosition, currentWire.last);
-      ref.read(cursorPositionProvider.notifier).state = cursorPos;
-      ref.read(isDrawingWire.notifier).state = true;
+      _ref.read(cursorPositionProvider.notifier).state = cursorPos;
+      _ref.read(isDrawingWire.notifier).state = true;
     } else {
-      ref.read(cursorPositionProvider.notifier).state = localPosition;
+      _ref.read(cursorPositionProvider.notifier).state = localPosition;
     }
   }
 
   void handleOnTapDown(TapDownDetails details) {
-    final mode = ref.read(drawingModeProvider);
+    final mode = _ref.read(drawingModeProvider);
     final localPosition = _excludePanOffset(details.localPosition);
     if (mode == Mode.view) {
-      ref.read(componentsProvider.notifier).toggleControlled();
+      _ref.read(componentsProvider.notifier).toggleControlled();
     } else if (mode == Mode.wire) {
-      ref.read(wiresProvider.notifier).addWire(localPosition);
+      _ref.read(wiresProvider.notifier).addWire(localPosition);
     } else if (mode == Mode.component) {
-      ref.read(componentsProvider).addComponent(localPosition);
+      _ref.read(componentsProvider).addComponent(localPosition);
     }
   }
 
   Offset _excludePanOffset(Offset localPosition) {
-    final panOffset = ref.read(panOffsetProvider);
+    final panOffset = _ref.read(panOffsetProvider);
     return localPosition - panOffset;
   }
 
   Offset getPoint(Offset location, Offset lastPoint) {
-    final straightLine = ref.read(isControlPressed);
+    final straightLine = _ref.read(isControlPressed);
     if (straightLine) {
       return getStraitPoint(location, lastPoint);
     } else {
@@ -63,15 +63,21 @@ class EventsHandler {
   }
 
   void wireDrawingEnd() {
-    ref.read(isDrawingWire.notifier).state = false;
-    ref.read(currentDrawingWireIdProvider.notifier).state = null;
+    _ref.read(isDrawingWire.notifier).state = false;
+    _ref.read(currentDrawingWireIdProvider.notifier).state = null;
   }
 
   void wireDiscard() {
-    final currentWire = ref.read(currentWireProvider);
-    ref.read(isDrawingWire.notifier).state = false;
-    ref.read(currentDrawingWireIdProvider.notifier).state = null;
+    final currentWire = _ref.read(currentWireProvider);
+    _ref.read(isDrawingWire.notifier).state = false;
+    _ref.read(currentDrawingWireIdProvider.notifier).state = null;
     if (currentWire == null) return;
-    ref.read(wiresProvider).removeWire(currentWire);
+    _ref.read(wiresProvider).removeWire(currentWire.id);
+  }
+
+  void handleDeleteKeypress() {
+    final deleted = _ref.read(wiresProvider).deleteMouseOverWire();
+    if (deleted) return;
+    _ref.read(componentsProvider).deleteMouseOverComponent();
   }
 }

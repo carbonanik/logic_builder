@@ -38,12 +38,11 @@ class WirePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // drawBackground(canvas, size);
     drawWires(canvas, size);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+  bool shouldRepaint(covariant WirePainter oldDelegate) {
     return true;
   }
 
@@ -69,25 +68,14 @@ class WirePainter extends CustomPainter {
       final lastPoint = wire.last + panOffset;
       path.lineTo(lastPoint.dx, lastPoint.dy);
       canvas.drawPath(path, wire.paint);
+      // if (path.contains(cursorPos)) {
+      //   canvas.drawCircle(cursorPos, 10, wire.paint);
+      // }
     }
 
     if (wires.isNotEmpty && wires.last.isNotEmpty && drawingWire) {
       canvas.drawLine(cursorPos, wires.last.last + panOffset, linePaint);
     }
-  }
-
-  void drawBackground(Canvas canvas, Size size) {
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    rectPaint.shader = const LinearGradient(
-      begin: Alignment.topRight,
-      end: Alignment.bottomLeft,
-      colors: [
-        Colors.deepPurple,
-        Colors.purple,
-      ],
-    ).createShader(rect);
-
-    canvas.drawRect(rect, rectPaint);
   }
 }
 
