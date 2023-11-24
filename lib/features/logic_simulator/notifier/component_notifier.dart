@@ -63,7 +63,6 @@ class ComponentNotifier extends ChangeNotifier {
     if (output?.connectedWireIds?.contains(wireId) == true) {
       output = output?.copyWith(
         connectedWireIds: output.connectedWireIds!.where((element) => element != wireId).toList(),
-        id: const Uuid().v4(),
       );
     }
     final newComponent = component?.copyWith(inputs: inputs, output: output);
