@@ -3,13 +3,13 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:week_task/features/logic_simulator/models/discrete_component.dart';
-import 'package:week_task/features/logic_simulator/models/discrete_component_type.dart';
-import 'package:week_task/features/logic_simulator/models/io.dart';
-import 'package:week_task/features/logic_simulator/models/matched_io.dart';
-import 'package:week_task/features/logic_simulator/provider/cursor_position_state_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/selected_component_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/wires_provider.dart';
+import 'package:week_task/models/discrete_component.dart';
+import 'package:week_task/models/discrete_component_type.dart';
+import 'package:week_task/models/io.dart';
+import 'package:week_task/models/matched_io.dart';
+import 'package:week_task/provider/cursor_position_state_provider.dart';
+import 'package:week_task/provider/selected_component_provider.dart';
+import 'package:week_task/provider/wires_provider.dart';
 
 class ComponentNotifier extends ChangeNotifier {
   final Ref _ref;

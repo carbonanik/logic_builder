@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:week_task/features/logic_simulator/models/discrete_component.dart';
+import 'package:week_task/models/discrete_component.dart';
 
 class MousePositionPainter extends CustomPainter {
   final Offset cursorPos;

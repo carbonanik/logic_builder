@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:week_task/features/logic_simulator/models/io.dart';
+import 'package:week_task/models/io.dart';
+
 
 class MatchedIoData {
   final IO matchedIO;

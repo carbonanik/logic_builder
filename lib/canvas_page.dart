@@ -3,19 +3,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/features/logic_simulator/models/discrete_component_type.dart';
-import 'package:week_task/features/logic_simulator/painter/logic_painter.dart';
-import 'package:week_task/features/logic_simulator/painter/mouse_position_painter.dart';
-import 'package:week_task/features/logic_simulator/painter/wire_painter.dart';
-import 'package:week_task/features/logic_simulator/provider/component_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/cursor_position_state_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/drawing_mode_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/event_handler_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/pan_offset_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/selected_component_provider.dart';
-import 'package:week_task/features/logic_simulator/provider/wire_drawing_providers.dart';
-import 'package:week_task/features/logic_simulator/provider/wires_provider.dart';
-import 'models/discrete_component.dart';
+import 'package:week_task/models/discrete_component.dart';
+import 'package:week_task/models/discrete_component_type.dart';
+import 'package:week_task/painter/logic_painter.dart';
+import 'package:week_task/painter/mouse_position_painter.dart';
+import 'package:week_task/painter/wire_painter.dart';
+import 'package:week_task/provider/component_provider.dart';
+import 'package:week_task/provider/cursor_position_state_provider.dart';
+import 'package:week_task/provider/drawing_mode_provider.dart';
+import 'package:week_task/provider/event_handler_provider.dart';
+import 'package:week_task/provider/pan_offset_provider.dart';
+import 'package:week_task/provider/selected_component_provider.dart';
+import 'package:week_task/provider/wire_drawing_providers.dart';
+import 'package:week_task/provider/wires_provider.dart';
 
 enum Mode {
   view,
@@ -40,7 +40,6 @@ class CanvasPage extends StatelessWidget {
 
   final keyboardFocusNode = FocusNode()..requestFocus();
   final scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
