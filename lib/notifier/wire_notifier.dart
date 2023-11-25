@@ -3,11 +3,11 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import 'package:week_task/models/matched_io.dart';
-import 'package:week_task/models/wire.dart';
-import 'package:week_task/provider/component_provider.dart';
-import 'package:week_task/provider/event_handler_provider.dart';
-import 'package:week_task/provider/wire_drawing_providers.dart';
+import 'package:logic_builder/models/matched_io.dart';
+import 'package:logic_builder/models/wire.dart';
+import 'package:logic_builder/provider/component_provider.dart';
+import 'package:logic_builder/provider/event_handler_provider.dart';
+import 'package:logic_builder/provider/wire_drawing_providers.dart';
 
 class WireNotifier extends ChangeNotifier {
   final Ref _ref;

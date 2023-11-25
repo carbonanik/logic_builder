@@ -1,6 +1,6 @@
 {
-    "name": "week_task",
-    "short_name": "week_task",
+    "name": "logic_builder",
+    "short_name": "logic_builder",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

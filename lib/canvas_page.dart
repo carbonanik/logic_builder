@@ -3,19 +3,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/models/discrete_component.dart';
-import 'package:week_task/models/discrete_component_type.dart';
-import 'package:week_task/painter/logic_painter.dart';
-import 'package:week_task/painter/mouse_position_painter.dart';
-import 'package:week_task/painter/wire_painter.dart';
-import 'package:week_task/provider/component_provider.dart';
-import 'package:week_task/provider/cursor_position_state_provider.dart';
-import 'package:week_task/provider/drawing_mode_provider.dart';
-import 'package:week_task/provider/event_handler_provider.dart';
-import 'package:week_task/provider/pan_offset_provider.dart';
-import 'package:week_task/provider/selected_component_provider.dart';
-import 'package:week_task/provider/wire_drawing_providers.dart';
-import 'package:week_task/provider/wires_provider.dart';
+import 'package:logic_builder/models/discrete_component.dart';
+import 'package:logic_builder/models/discrete_component_type.dart';
+import 'package:logic_builder/painter/logic_painter.dart';
+import 'package:logic_builder/painter/mouse_position_painter.dart';
+import 'package:logic_builder/painter/wire_painter.dart';
+import 'package:logic_builder/provider/component_provider.dart';
+import 'package:logic_builder/provider/cursor_position_state_provider.dart';
+import 'package:logic_builder/provider/drawing_mode_provider.dart';
+import 'package:logic_builder/provider/event_handler_provider.dart';
+import 'package:logic_builder/provider/pan_offset_provider.dart';
+import 'package:logic_builder/provider/selected_component_provider.dart';
+import 'package:logic_builder/provider/wire_drawing_providers.dart';
+import 'package:logic_builder/provider/wires_provider.dart';
 
 enum Mode {
   view,

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:week_task/models/io.dart';
+import 'package:logic_builder/models/io.dart';
 
 
 class MatchedIoData {

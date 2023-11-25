@@ -1,4 +1,4 @@
-# week_task
+# logic_builder
 
 A new Flutter project.
 

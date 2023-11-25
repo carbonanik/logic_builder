@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/canvas_page.dart';
-import 'package:week_task/provider/component_provider.dart';
-import 'package:week_task/provider/cursor_position_state_provider.dart';
-import 'package:week_task/provider/drawing_mode_provider.dart';
-import 'package:week_task/provider/pan_offset_provider.dart';
-import 'package:week_task/provider/wire_drawing_providers.dart';
-import 'package:week_task/provider/wires_provider.dart';
+import 'package:logic_builder/canvas_page.dart';
+import 'package:logic_builder/provider/component_provider.dart';
+import 'package:logic_builder/provider/cursor_position_state_provider.dart';
+import 'package:logic_builder/provider/drawing_mode_provider.dart';
+import 'package:logic_builder/provider/pan_offset_provider.dart';
+import 'package:logic_builder/provider/wire_drawing_providers.dart';
+import 'package:logic_builder/provider/wires_provider.dart';
 
 class EventsHandler {
   final Ref _ref;

@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:week_task/models/wire.dart';
-import 'package:week_task/provider/wires_provider.dart';
+import 'package:logic_builder/models/wire.dart';
+import 'package:logic_builder/provider/wires_provider.dart';
 
 final isDrawingWire = StateProvider((ref) => false);
 

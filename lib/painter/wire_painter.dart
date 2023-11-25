@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:week_task/models/wire.dart';
+import 'package:logic_builder/models/wire.dart';
 
 class WirePainter extends CustomPainter {
   final List<Wire> wires;
