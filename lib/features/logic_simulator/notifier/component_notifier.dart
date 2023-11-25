@@ -23,7 +23,7 @@ class ComponentNotifier extends ChangeNotifier {
 
   UnmodifiableMapView<String, DiscreteComponent> get componentLookup => UnmodifiableMapView(_componentLookup);
 
-  void changeInputIoId(String componentId, String ioId, String replacedIoId) {
+  void changeComponentInputId(String componentId, String ioId, String replacedIoId) {
     final component = _componentLookup[componentId];
     if (component == null) return;
     final inputs = component.inputs;
@@ -55,7 +55,7 @@ class ComponentNotifier extends ChangeNotifier {
       if (inputs?[i].connectedWireIds?.contains(wireId) == true) {
         inputs![i] = inputs[i].copyWith(
           connectedWireIds: inputs[i].connectedWireIds!.where((element) => element != wireId).toList(),
-          id: const Uuid().v4(),
+          id: const Uuid().v4(), // new id because inputs id get replaced by connected component output id by changing it we are disconnecting it
         );
       }
     }
@@ -122,7 +122,8 @@ class ComponentNotifier extends ChangeNotifier {
       wiresIds.addAll(element.connectedWireIds ?? []);
     }
     _ref.read(wiresProvider).removeWires(wiresIds.toList());
-    _delete(component);
+
+    _delete(componentLookup[component.output.id]!);
     return true;
   }
 

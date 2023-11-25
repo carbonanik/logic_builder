@@ -16,7 +16,7 @@ class Wire {
   Wire({
     required this.id,
     List<Offset> points = const [],
-    this.color = Colors.brown,
+    this.color = Colors.black54,
     this.width = 3,
     required this.connectionId,
     required this.startComponentId,

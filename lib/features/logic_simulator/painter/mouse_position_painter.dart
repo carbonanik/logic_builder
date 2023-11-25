@@ -12,7 +12,7 @@ class MousePositionPainter extends CustomPainter {
     required this.drawingComponent,
   });
 
-  final rectPaint = Paint()..style = PaintingStyle.fill;
+  final rectPaint = Paint()..style = PaintingStyle.fill..color = Colors.grey[800]!;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -34,7 +34,7 @@ class MousePositionPainter extends CustomPainter {
         rectPaint,
       );
 
-      drawTitle(canvas, selectedComponent!.copyWith(pos: cursorPos), Colors.redAccent);
+      drawTitle(canvas, selectedComponent!.copyWith(pos: cursorPos), Colors.grey[700]!);
     }
   }
 

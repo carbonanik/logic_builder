@@ -77,6 +77,7 @@ class EventsHandler {
 
   void handleDeleteKeypress() {
     final deleted = _ref.read(wiresProvider).deleteMouseOverWire();
+    print(deleted);
     if (deleted) return;
     _ref.read(componentsProvider).deleteMouseOverComponent();
   }

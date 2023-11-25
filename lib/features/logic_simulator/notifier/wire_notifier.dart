@@ -110,7 +110,7 @@ class WireNotifier extends ChangeNotifier {
         _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
 
         // replace the id with the output id that is connected
-        _ref.read(componentsProvider).changeInputIoId(componentId, ioId, replacedIoId);
+        _ref.read(componentsProvider).changeComponentInputId(componentId, ioId, replacedIoId);
 
         wireEndComponent(currentWire.id, ioData.componentId);
       } else {
@@ -128,7 +128,7 @@ class WireNotifier extends ChangeNotifier {
         // store wire id in the io
         _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
 
-        _ref.read(componentsProvider).changeInputIoId(componentId, ioId, replacedIoId);
+        _ref.read(componentsProvider).changeComponentInputId(componentId, ioId, replacedIoId);
 
         wireEndComponent(currentWire.id, ioData.componentId);
       }

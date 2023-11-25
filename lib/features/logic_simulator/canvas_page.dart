@@ -33,7 +33,7 @@ final reservedComponents = [
   createComponent(DiscreteComponentType.output),
 ];
 
-const selectionColor = Colors.purpleAccent;
+const selectionColor = Colors.redAccent;
 
 class CanvasPage extends StatelessWidget {
   CanvasPage({super.key});
@@ -44,6 +44,7 @@ class CanvasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       body: Stack(
         children: [
           Consumer(
@@ -138,80 +139,95 @@ class CanvasPage extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20),
+                  color: Colors.black,
+                  padding: const EdgeInsets.only(left: 50, right: 50, bottom: 20, top: 10),
                   child: Column(
                     children: [
                       mode == Mode.component
                           ? CustomScrollbarWithSingleChildScrollView(
-                            controller: scrollController,
-                            scrollDirection: Axis.horizontal,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Row(
+                              controller: scrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: List.generate(
                                     reservedComponents.length,
-                                        (index) => ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(
-                                          selectedComponent == reservedComponents[index] ? Colors.deepPurple : null,
-                                        ),
-                                        foregroundColor: MaterialStateProperty.all(
-                                          selectedComponent == reservedComponents[index] ? Colors.white : null,
-                                        ),
-                                      ),
-                                      onPressed: () {
+                                    (index) => InkWell(
+                                      onTap: () {
                                         ref.read(selectedComponentProvider.notifier).state = reservedComponents[index];
                                       },
-                                      child: Text(
-                                        reservedComponents[index].name,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        color: selectedComponent == reservedComponents[index]
+                                            ? selectionColor
+                                            : Colors.grey[800],
+                                        child: Text(
+                                          reservedComponents[index].name,
+                                          style: TextStyle(
+                                            color: selectedComponent == reservedComponents[index]
+                                                ? Colors.grey[800]
+                                                : Colors.grey[400],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  )),
-                            ),
-                          )
+                                  ),
+                                ),
+                              ),
+                            )
                           : const SizedBox(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            color: mode == Mode.view ? selectionColor : null,
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               ref.read(drawingModeProvider.notifier).state = Mode.view;
                             },
-                            icon: const Icon(Icons.pan_tool_alt_rounded),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              color: mode == Mode.view ? selectionColor : Colors.grey[800],
+                              child: Icon(
+                                Icons.pan_tool_alt_rounded,
+                                color: mode == Mode.view ? Colors.grey[800] : Colors.grey[400],
+                              ),
+                            ),
                           ),
-                          IconButton(
-                            color: mode == Mode.component ? selectionColor : null,
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               ref.read(drawingModeProvider.notifier).state = Mode.component;
                             },
-                            icon: const Icon(Icons.memory_rounded),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              color: mode == Mode.component ? selectionColor : Colors.grey[800],
+                              child: Icon(
+                                Icons.memory_rounded,
+                                color: mode == Mode.component ? Colors.grey[800] : Colors.grey[400],
+                              ),
+                            ),
                           ),
-                          IconButton(
-                            color: mode == Mode.wire ? selectionColor : null,
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               ref.read(drawingModeProvider.notifier).state = Mode.wire;
                             },
-                            icon: const Icon(Icons.cable_rounded),
-                          ),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              color: mode == Mode.wire ? selectionColor : Colors.grey[800],
+                              child: Icon(
+                                Icons.cable_rounded,
+                                color: mode == Mode.wire ? Colors.grey[800] : Colors.grey[400],
+                              ),
+                            ),
+                          )
                         ],
                       ),
-
                     ],
                   ),
                 ),
               );
             },
           ),
-          // Consumer(
-          //   builder: (context, ref, child) {
-          //     final mode = ref.watch(drawingModeProvider);
-          //     final selectedComponent = ref.watch(selectedComponentProvider);
-          //     return ;
-          //   },
-          // )
         ],
       ),
     );

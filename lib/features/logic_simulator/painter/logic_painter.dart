@@ -32,7 +32,7 @@ class LogicPainter extends CustomPainter {
 
   final floatingPaint = Paint()
     ..style = PaintingStyle.fill
-    ..color = Colors.grey;
+    ..color = Colors.black;
 
   final hoverIoPaint = Paint()
     ..style = PaintingStyle.fill
@@ -82,7 +82,7 @@ class LogicPainter extends CustomPainter {
     drawIOs(canvas, component.inputs, component.pos, true);
     drawIOs(canvas, [component.output], component.pos, false);
 
-    drawTitle(canvas, component, Colors.redAccent);
+    drawTitle(canvas, component, Colors.grey[800]!);
   }
 
   void drawSwitchViewComponent(Canvas canvas, DiscreteComponent component) {
