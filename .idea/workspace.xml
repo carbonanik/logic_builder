@@ -5,66 +5,74 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f82c474e-dc77-4714-9c2a-9c0919a9a8b3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.metadata" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis_options.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_options.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/week_task/MainActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-hdpi/ic_launcher.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-mdpi/ic_launcher.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/canvas_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/canvas_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/event_handlers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/event_handlers.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/data_source/local/module_store.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/data_source/provider/module_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/module.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/offset_map.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/size_map.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/is_saved_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/module_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/DIPS" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/DIPS" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Extension State/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Extension State/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Favicons" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Favicons" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/GCM Store/Encryption/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/GCM Store/Encryption/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/History" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/History" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Local Storage/leveldb/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Local Storage/leveldb/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Network Action Predictor" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Network Action Predictor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Network Persistent State" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Network Persistent State" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Preferences" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Preferences" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Reporting and NEL" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Reporting and NEL" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Service Worker/Database/000003.log" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Service Worker/Database/000003.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Service Worker/Database/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Service Worker/Database/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Service Worker/ScriptCache/index-dir/the-real-index" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Service Worker/ScriptCache/index-dir/the-real-index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Session Storage/000003.log" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Session Storage/000003.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Session Storage/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Session Storage/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Shared Dictionary/cache/index-dir/the-real-index" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Shared Dictionary/cache/index-dir/the-real-index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Shortcuts" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Shortcuts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Site Characteristics Database/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Site Characteristics Database/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Sync Data/LevelDB/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Sync Data/LevelDB/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Top Sites" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Top Sites" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/TransportSecurity" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/TransportSecurity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Trust Tokens" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Trust Tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Visited Links" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/Visited Links" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/WebStorage/QuotaManager" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/WebStorage/QuotaManager" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/000003.log" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/000003.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/metadata/000003.log" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/metadata/000003.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/metadata/LOG" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/chrome-device/Default/shared_proto_db/metadata/LOG" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/logic_builder_2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/logic_builder_2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/30ceeba7d4a7a8dff6a5c9dea633a0aa.cache.dill.track.dill" beforeDir="false" afterPath="$PROJECT_DIR$/build/30ceeba7d4a7a8dff6a5c9dea633a0aa.cache.dill.track.dill" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/flutter_assets/NOTICES" beforeDir="false" afterPath="$PROJECT_DIR$/build/flutter_assets/NOTICES" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/canvas_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/canvas_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/event_handlers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/event_handlers.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/discrete_component.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/discrete_component.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/matched_io.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/matched_io.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/notifier/component_notifier.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifier/component_notifier.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/notifier/wire_notifier.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifier/wire_notifier.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painter/logic_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painter/logic_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painter/mouse_position_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painter/mouse_position_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painter/wire_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painter/wire_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/component_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/component_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/drawing_mode_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/drawing_mode_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/event_handler_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/event_handler_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/selected_component_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/selected_component_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/wire_drawing_providers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/wire_drawing_providers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/provider/wires_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/provider/wires_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/component_view_type.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/component_view_type.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/discrete_component.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/discrete_component.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/discrete_component_type.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/discrete_component_type.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/io.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/io.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/matched_io.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/matched_io.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/wire.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/models/wire.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifier/component_notifier.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/notifier/component_notifier.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifier/wire_notifier.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/notifier/wire_notifier.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painter/logic_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/painter/logic_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painter/mouse_position_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/painter/mouse_position_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painter/wire_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/painter/wire_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/component_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/component_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/cursor_position_state_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/cursor_position_state_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/drawing_mode_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/drawing_mode_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/event_handler_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/event_handler_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/pan_offset_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/pan_offset_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/selected_component_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/selected_component_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/wire_drawing_providers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/wire_drawing_providers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/provider/wires_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/logic_canvas/provider/wires_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/widget_test.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/favicon.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/icons/Icon-192.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/icons/Icon-512.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/icons/Icon-maskable-192.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/icons/Icon-maskable-512.png.xmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/manifest.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,10 +97,19 @@
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/carbonanik/Work/Flutter/logic_builder_2&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/carbonanik/Work/Flutter/logic_builder&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/features/logic_canvas" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
       <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
@@ -109,5 +126,16 @@
       <updated>1700900422092</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

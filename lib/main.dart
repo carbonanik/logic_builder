@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logic_builder/canvas_page.dart';
+import 'package:logic_builder/features/logic_canvas/canvas_page.dart';
+import 'package:logic_builder/features/logic_canvas/data_source/local/module_store.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openLazyBox<String>(moduleBox);
   runApp(const ProviderScope(child: MyApp()));
 }
 
