@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/is_saved_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -16,8 +17,10 @@ import 'package:logic_builder/features/logic_canvas/provider/wires_provider.dart
 class ComponentNotifier extends ChangeNotifier {
   final Ref _ref;
 
-  ComponentNotifier(this._ref){
-    _ref.read(modulesStoreProvider).getModule().then((value) {
+  ComponentNotifier(this._ref) {
+    final openModuleId = _ref.read(openModuleIdProvider);
+    if (openModuleId == null) return;
+    _ref.read(modulesStoreProvider).getModule(openModuleId).then((value) {
       value?.components.forEach((component) {
         _components.add(component);
         _componentLookup[component.output.id] = component;
@@ -66,7 +69,8 @@ class ComponentNotifier extends ChangeNotifier {
       if (inputs?[i].connectedWireIds?.contains(wireId) == true) {
         inputs![i] = inputs[i].copyWith(
           connectedWireIds: inputs[i].connectedWireIds!.where((element) => element != wireId).toList(),
-          id: const Uuid().v4(), // new id because inputs id get replaced by connected component output id by changing it we are disconnecting it
+          id: const Uuid()
+              .v4(), // new id because inputs id get replaced by connected component output id by changing it we are disconnecting it
         );
       }
     }

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component_type.dart';
@@ -245,14 +246,17 @@ class CanvasPage extends StatelessWidget {
                     onTap: () async {
                       final wires = ref.read(wiresProvider).wires;
                       final components = ref.read(componentsProvider).components;
-                      final module = Module(
-                        id: const Uuid().v4(),
-                        name: "MODULES",
-                        components: components,
-                        wires: wires,
-                      );
-
-                      await ref.read(modulesStoreProvider).saveModule(module);
+                      final openModuleId = ref.read(openModuleIdProvider);
+                      if (openModuleId == null) return;
+                      final module = await ref.read(modulesStoreProvider).getModule(openModuleId);
+                      if (module == null) return;
+                      await ref.read(modulesStoreProvider).saveModule(
+                            openModuleId,
+                            module.copyWith(
+                              wires: wires,
+                              components: components,
+                            ),
+                          );
                       ref.read(isSavedProvider.notifier).state = true;
                       print("save");
                     },

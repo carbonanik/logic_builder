@@ -1,3 +1,6 @@
-2023/11/26-17:28:36.631 108c Reusing MANIFEST /tmp/flutter_tools.XKIEAS/flutter_tools_chrome_device.PHSGFB/Default/shared_proto_db/MANIFEST-000001
-2023/11/26-17:28:36.631 108c Recovering log #3
-2023/11/26-17:28:36.631 108c Reusing old log /tmp/flutter_tools.XKIEAS/flutter_tools_chrome_device.PHSGFB/Default/shared_proto_db/000003.log 
+2023/11/27-12:49:33.010 1137 Reusing MANIFEST /tmp/flutter_tools.JTPDWK/flutter_tools_chrome_device.EMNRDQ/Default/shared_proto_db/MANIFEST-000001
+2023/11/27-12:49:33.010 1137 Recovering log #3
+2023/11/27-12:49:33.011 1137 Reusing old log /tmp/flutter_tools.JTPDWK/flutter_tools_chrome_device.EMNRDQ/Default/shared_proto_db/000003.log 
+2023/11/27-12:49:50.710 112d Level-0 table #5: started
+2023/11/27-12:49:50.711 112d Level-0 table #5: 122902 bytes OK
+2023/11/27-12:49:50.711 112d Delete type=0 #3

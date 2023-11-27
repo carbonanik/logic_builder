@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/is_saved_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -15,7 +16,9 @@ class WireNotifier extends ChangeNotifier {
   final Ref _ref;
 
   WireNotifier(this._ref) {
-    _ref.read(modulesStoreProvider).getModule().then((value) {
+    final openModuleId = _ref.read(openModuleIdProvider);
+    if (openModuleId == null) return;
+    _ref.read(modulesStoreProvider).getModule(openModuleId).then((value) {
       value?.wires.forEach((wire) {
         _wires.add(wire);
         _wiresLookup[wire.id] = wire;

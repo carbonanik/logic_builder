@@ -14,6 +14,20 @@ class Module {
     required this.wires,
   });
 
+  Module copyWith({
+    String? id,
+    String? name,
+    List<DiscreteComponent>? components,
+    List<Wire>? wires,
+  }) {
+    return Module(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      components: components ?? this.components,
+      wires: wires ?? this.wires,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

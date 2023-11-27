@@ -12,8 +12,6 @@ class Wire {
   final String? endComponentId;
   final bool startFromInput;
 
-  bool isCompleted = true;
-
   Wire({
     required this.id,
     List<Offset> points = const [],
