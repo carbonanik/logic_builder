@@ -136,7 +136,7 @@ class LogicPainter extends CustomPainter {
   void drawIOs(Canvas canvas, List<IO> ios, Offset partPos, bool isInput) {
     for (int i = 0; i < ios.length; i++) {
       final pos = ios[i].pos + partPos;
-      final hovered = (pos - cursorPos).distance < 6;
+      final hovered = (pos - cursorPos).distance < 10; // todo this was 6
 
       Paint? paint;
       final inputState = componentLookup[ios[i].id]?.state;

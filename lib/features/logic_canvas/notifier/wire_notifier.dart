@@ -156,6 +156,7 @@ class WireNotifier extends ChangeNotifier {
             ),
       );
     }
+    notifyListeners();
   }
 
   void wireEndComponent(String wireID, String componentId) {

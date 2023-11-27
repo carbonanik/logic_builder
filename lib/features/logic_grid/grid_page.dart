@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
@@ -13,67 +14,70 @@ class GridPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const width = 200;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    final width = screenWidth > 400 ? 200 : 170;
     final count = (screenWidth / width).floor();
     return Scaffold(
       backgroundColor: Colors.grey[900],
-      body: Column(
-        children: [
-          Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Text(
-                    'Create Logic',
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 80,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Consumer(
-              builder: (context, ref, child) {
-                final modulesNamesMap = ref.watch(moduleNamesProvider);
-                final modulesKeys = modulesNamesMap.keys.toList();
-                return Center(
-                  child: SizedBox(
-                    width: (width * count).toDouble(),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: count,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Text(
+                      'Create Logic',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) ? 40 : 80,
+                        fontWeight: FontWeight.bold,
                       ),
-                      itemCount: modulesKeys.length + 1,
-                      itemBuilder: (context, index) {
-                        return index == 0
-                            ? Container(
-                                padding: const EdgeInsets.all(8.0),
-                                child: buildCreateProjectButton(),
-                              )
-                            : Container(
-                                padding: const EdgeInsets.all(8.0),
-                                child: buildModuleCard(
-                                  ref,
-                                  modulesKeys[index - 1],
-                                  index,
-                                  context,
-                                  modulesNamesMap[modulesKeys[index - 1]] ?? "Project",
-                                ),
-                              );
-                      },
                     ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final modulesNamesMap = ref.watch(moduleNamesProvider);
+                  final modulesKeys = modulesNamesMap.keys.toList();
+                  return Center(
+                    child: SizedBox(
+                      width: (width * count).toDouble(),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: count,
+                        ),
+                        itemCount: modulesKeys.length + 1,
+                        itemBuilder: (context, index) {
+                          return index == 0
+                              ? Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: buildCreateProjectButton(),
+                                )
+                              : Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: buildModuleCard(
+                                    ref,
+                                    modulesKeys[index - 1],
+                                    index,
+                                    context,
+                                    modulesNamesMap[modulesKeys[index - 1]] ?? "Project",
+                                  ),
+                                );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

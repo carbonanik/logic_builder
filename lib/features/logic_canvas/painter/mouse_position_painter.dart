@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component.dart';
+import 'package:logic_builder/features/logic_canvas/models/wire.dart';
 
 class MousePositionPainter extends CustomPainter {
   final Offset cursorPos;
   final DiscreteComponent? selectedComponent;
   final bool drawingComponent;
+  final bool drawingWire;
+  final List<Wire> wires;
+  final Offset panOffset;
 
   MousePositionPainter({
     required this.cursorPos,
     required this.selectedComponent,
     required this.drawingComponent,
+    required this.drawingWire,
+    required this.wires,
+    required this.panOffset,
   });
 
   final rectPaint = Paint()..style = PaintingStyle.fill..color = Colors.grey[800]!;
 
+  final linePaint = Paint()
+    ..color = Colors.grey
+    ..strokeWidth = 2
+    ..style = PaintingStyle.stroke
+    ..strokeCap = StrokeCap.round;
+
+
   @override
   void paint(Canvas canvas, Size size) {
     drawCurrentComponent(canvas, size);
+    if (wires.isNotEmpty && wires.last.isNotEmpty && drawingWire) {
+      canvas.drawLine(cursorPos, wires.last.last + panOffset, linePaint);
+    }
   }
 
   @override

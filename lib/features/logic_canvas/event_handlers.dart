@@ -26,7 +26,7 @@ class EventsHandler {
     }
   }
 
-  void handleOnTapDown(TapDownDetails details) {
+  void handleOnTapDown(TapUpDetails details) {
     final mode = _ref.read(drawingModeProvider);
     final localPosition = _excludePanOffset(details.localPosition);
     if (mode == Mode.view) {
@@ -35,6 +35,8 @@ class EventsHandler {
       _ref.read(wiresProvider.notifier).addWire(localPosition);
     } else if (mode == Mode.component) {
       _ref.read(componentsProvider).addComponent(localPosition);
+    } else if (mode == Mode.delete) {
+      handleDeleteKeypress();
     }
   }
 
@@ -77,7 +79,6 @@ class EventsHandler {
 
   void handleDeleteKeypress() {
     final deleted = _ref.read(wiresProvider).deleteMouseOverWire();
-    print(deleted);
     if (deleted) return;
     _ref.read(componentsProvider).deleteMouseOverComponent();
   }

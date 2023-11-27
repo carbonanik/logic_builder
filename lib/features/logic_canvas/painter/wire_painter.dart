@@ -30,11 +30,6 @@ class WirePainter extends CustomPainter {
     ..style = PaintingStyle.fill
     ..color = Colors.grey;
 
-  final linePaint = Paint()
-    ..color = Colors.grey
-    ..strokeWidth = 2
-    ..style = PaintingStyle.stroke
-    ..strokeCap = StrokeCap.round;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -68,14 +63,11 @@ class WirePainter extends CustomPainter {
       final lastPoint = wire.last + panOffset;
       path.lineTo(lastPoint.dx, lastPoint.dy);
       canvas.drawPath(path, wire.paint);
-      // if (path.contains(cursorPos)) {
-      //   canvas.drawCircle(cursorPos, 10, wire.paint);
-      // }
     }
 
-    if (wires.isNotEmpty && wires.last.isNotEmpty && drawingWire) {
-      canvas.drawLine(cursorPos, wires.last.last + panOffset, linePaint);
-    }
+    // if (wires.isNotEmpty && wires.last.isNotEmpty && drawingWire) {
+    //   canvas.drawLine(cursorPos, wires.last.last + panOffset, linePaint);
+    // }
   }
 }
 

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,7 +8,6 @@ import 'package:logic_builder/features/logic_grid/provider/open_module_id_provid
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component_type.dart';
-import 'package:logic_builder/features/logic_canvas/models/module.dart';
 import 'package:logic_builder/features/logic_canvas/painter/logic_painter.dart';
 import 'package:logic_builder/features/logic_canvas/painter/mouse_position_painter.dart';
 import 'package:logic_builder/features/logic_canvas/painter/wire_painter.dart';
@@ -20,12 +20,12 @@ import 'package:logic_builder/features/logic_canvas/provider/pan_offset_provider
 import 'package:logic_builder/features/logic_canvas/provider/selected_component_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/wire_drawing_providers.dart';
 import 'package:logic_builder/features/logic_canvas/provider/wires_provider.dart';
-import 'package:uuid/uuid.dart';
 
 enum Mode {
   view,
   wire,
   component,
+  delete,
 }
 
 final reservedComponents = [
@@ -87,22 +87,30 @@ class CanvasPage extends StatelessWidget {
               );
             },
           ),
-          Consumer(
-            builder: (context, ref, child) {
-              final cursorPosition = ref.watch(cursorPositionProvider);
-              final panOffset = ref.watch(panOffsetProvider);
-              final selectedComponent = ref.watch(selectedComponentProvider);
-              final mode = ref.watch(drawingModeProvider);
-              return CustomPaint(
-                painter: MousePositionPainter(
-                  cursorPos: cursorPosition + panOffset,
-                  selectedComponent: selectedComponent,
-                  drawingComponent: mode == Mode.component,
-                ),
-                child: Container(),
-              );
-            },
-          ),
+          if (!(defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android))
+            Consumer(
+              builder: (context, ref, child) {
+                final cursorPosition = ref.watch(cursorPositionProvider);
+                final panOffset = ref.watch(panOffsetProvider);
+                final selectedComponent = ref.watch(selectedComponentProvider);
+                final mode = ref.watch(drawingModeProvider);
+                final wireState = ref.watch(wiresProvider);
+                final drawingWire = ref.watch(isDrawingWire);
+
+                return CustomPaint(
+                  painter: MousePositionPainter(
+                    cursorPos: cursorPosition + panOffset,
+                    selectedComponent: selectedComponent,
+                    drawingComponent: mode == Mode.component,
+                    panOffset: panOffset,
+                    drawingWire: drawingWire,
+                    wires: wireState.wires,
+
+                  ),
+                  child: Container(),
+                );
+              },
+            ),
           Consumer(
             builder: (context, ref, child) {
               final eventHandler = ref.watch(eventHandlerProvider);
@@ -123,7 +131,7 @@ class CanvasPage extends StatelessWidget {
                 child: Listener(
                   onPointerHover: eventHandler.handlePointerHover,
                   child: GestureDetector(
-                    onTapDown: eventHandler.handleOnTapDown,
+                    onTapUp: eventHandler.handleOnTapDown,
                     onPanUpdate: (details) {
                       ref.read(panOffsetProvider.notifier).state += details.delta;
                     },
@@ -222,6 +230,19 @@ class CanvasPage extends StatelessWidget {
                               child: Icon(
                                 Icons.cable_rounded,
                                 color: mode == Mode.wire ? Colors.grey[800] : Colors.grey[400],
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              ref.read(drawingModeProvider.notifier).state = Mode.delete;
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              color: mode == Mode.delete ? selectionColor : Colors.grey[800],
+                              child: Icon(
+                                Icons.delete,
+                                color: mode == Mode.delete ? Colors.grey[800] : Colors.grey[400],
                               ),
                             ),
                           )

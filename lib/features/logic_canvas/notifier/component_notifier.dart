@@ -163,7 +163,7 @@ class ComponentNotifier extends ChangeNotifier {
     final cursorPos = _ref.read(cursorPositionProvider);
     for (var i = 0; i < ios.length; i++) {
       final globalPos = ios[i].pos + componentPos;
-      final isHovered = (globalPos - cursorPos).distance < 6;
+      final isHovered = (globalPos - cursorPos).distance < 10; // TODO this was 6
 
       if (isHovered) {
         return MatchedIoData(
