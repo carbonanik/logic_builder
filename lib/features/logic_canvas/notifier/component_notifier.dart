@@ -69,8 +69,8 @@ class ComponentNotifier extends ChangeNotifier {
       if (inputs?[i].connectedWireIds?.contains(wireId) == true) {
         inputs![i] = inputs[i].copyWith(
           connectedWireIds: inputs[i].connectedWireIds!.where((element) => element != wireId).toList(),
-          id: const Uuid()
-              .v4(), // new id because inputs id get replaced by connected component output id by changing it we are disconnecting it
+          id: const Uuid().v4(),
+          // new id because inputs id get replaced by connected component output id by changing it we are disconnecting it
         );
       }
     }

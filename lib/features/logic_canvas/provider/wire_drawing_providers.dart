@@ -13,6 +13,6 @@ final currentWireProvider = Provider<Wire?>((ref) {
   if (cid == null) {
     return null;
   }
-  return ref.watch(wiresProvider).wiresLookup[cid];
+  return ref.read(wiresProvider).wiresLookup[cid];
 });
 
