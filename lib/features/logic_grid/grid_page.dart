@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
 import 'package:logic_builder/features/logic_canvas/canvas_page.dart';
-import 'package:logic_builder/features/logic_canvas/data_source/provider/mdoule_names_store_provider.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/models/module.dart';
 import 'package:logic_builder/features/logic_grid/provider/module_names_provider.dart';
+import 'package:logic_builder/features/providers/title_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class GridPage extends StatelessWidget {
@@ -27,16 +27,35 @@ class GridPage extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    padding: const EdgeInsets.only(
+                      top: 20.0,
+                      bottom: 10,
+                    ),
                     child: Text(
-                      'Create Logic',
+                      'Logic Builder',
                       style: TextStyle(
                         color: Colors.grey[400],
-                        fontSize: (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) ? 40 : 80,
+                        fontSize: (defaultTargetPlatform == TargetPlatform.iOS ||
+                                defaultTargetPlatform == TargetPlatform.android)
+                            ? 40
+                            : 80,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        "Friendly and lightweight tool to Design digital logic circuits",
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: (defaultTargetPlatform == TargetPlatform.iOS ||
+                                  defaultTargetPlatform == TargetPlatform.android)
+                              ? 16
+                              : 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ))
                 ],
               ),
             ),
@@ -92,6 +111,7 @@ class GridPage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         ref.read(openModuleIdProvider.notifier).state = moduleKey;
+        ref.read(titleProvider.notifier).state = moduleName;
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CanvasPage(),
@@ -129,58 +149,7 @@ class GridPage extends StatelessWidget {
             return GestureDetector(
               onTap: () async {
                 final controller = TextEditingController();
-                final AlertDialog dialog = AlertDialog(
-                  title: const Text(
-                    "Create New Project",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                    ),
-                  ),
-                  backgroundColor: Colors.grey[800],
-                  surfaceTintColor: Colors.grey,
-                  shape: const RoundedRectangleBorder(),
-                  content:  TextField(
-                    controller: controller,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Project Name",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        "Cancel",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(controller.value.text);
-                      },
-                      child: const Text(
-                        "Create",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
+                final AlertDialog dialog = buildDialog(controller, context);
                 final name = await showDialog<String?>(context: context, builder: (context) => dialog);
                 if (name == null) {
                   return;
@@ -201,6 +170,8 @@ class GridPage extends StatelessWidget {
                       module.name,
                     );
                 ref.read(openModuleIdProvider.notifier).state = openModuleId;
+                ref.read(titleProvider.notifier).state = name;
+                controller.dispose();
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => CanvasPage(),
                 ));
@@ -222,6 +193,61 @@ class GridPage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  AlertDialog buildDialog(TextEditingController controller, BuildContext context) {
+    return AlertDialog(
+      title: const Text(
+        "Create New Project",
+        style: TextStyle(
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
+        ),
+      ),
+      backgroundColor: Colors.grey[800],
+      surfaceTintColor: Colors.grey,
+      shape: const RoundedRectangleBorder(),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          hintText: "Enter Project Name",
+          hintStyle: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+        style: const TextStyle(
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            "Cancel",
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(controller.value.text);
+          },
+          child: const Text(
+            "Create",
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

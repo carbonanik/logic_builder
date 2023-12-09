@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/local/module_name_store.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/local/module_store.dart';
 import 'package:logic_builder/features/logic_grid/grid_page.dart';
+import 'package:logic_builder/features/providers/title_provider.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -12,18 +13,13 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: ref.watch(titleProvider),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
         useMaterial3: true,
