@@ -9,7 +9,7 @@
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/build-passing-green" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/flutter-3.0-blue" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/dart-3.0-blue" height="20"/></a>
-<a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/repo_size-89.0MB-blue" height="20"/></a>
+<a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/github/repo-size/carbonanik/logic_builder" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/license-MIT-red" height="20"/></a>
 </p>
 
