@@ -28,4 +28,3 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-

@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logic_builder/features/logic_canvas/canvas_page.dart';
 import 'package:logic_builder/features/logic_canvas/provider/component_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/cursor_position_state_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/drawing_mode_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/pan_offset_provider.dart';
+import 'package:logic_builder/features/logic_canvas/provider/selected_component_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/wire_drawing_providers.dart';
 import 'package:logic_builder/features/logic_canvas/provider/wires_provider.dart';
 
@@ -12,6 +14,23 @@ class EventsHandler {
   final Ref _ref;
 
   EventsHandler(this._ref);
+
+  void handleOnKey(value) {
+    if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.escape) {
+      wireDiscard();
+      _ref.read(selectedComponentProvider.notifier).state = null;
+    } else if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+      _ref.read(isControlPressed.notifier).state = true;
+    } else if (value is RawKeyUpEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+      _ref.read(isControlPressed.notifier).state = false;
+    } else if (value is RawKeyUpEvent && value.physicalKey == PhysicalKeyboardKey.delete) {
+      handleDeleteKeypress();
+    }
+  }
+
+  void handlePanUpdate(details) {
+    _ref.read(panOffsetProvider.notifier).state += details.delta;
+  }
 
   void handlePointerHover(PointerHoverEvent event) {
     final currentWireID = _ref.read(currentDrawingWireIdProvider);

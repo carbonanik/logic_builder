@@ -116,25 +116,12 @@ class CanvasPage extends StatelessWidget {
               final eventHandler = ref.watch(eventHandlerProvider);
               return RawKeyboardListener(
                 focusNode: keyboardFocusNode,
-                onKey: (value) {
-                  if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.escape) {
-                    eventHandler.wireDiscard();
-                    ref.read(selectedComponentProvider.notifier).state = null;
-                  } else if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
-                    ref.read(isControlPressed.notifier).state = true;
-                  } else if (value is RawKeyUpEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
-                    ref.read(isControlPressed.notifier).state = false;
-                  } else if (value is RawKeyUpEvent && value.physicalKey == PhysicalKeyboardKey.delete) {
-                    eventHandler.handleDeleteKeypress();
-                  }
-                },
+                onKey: eventHandler.handleOnKey,
                 child: Listener(
                   onPointerHover: eventHandler.handlePointerHover,
                   child: GestureDetector(
                     onTapUp: eventHandler.handleOnTapDown,
-                    onPanUpdate: (details) {
-                      ref.read(panOffsetProvider.notifier).state += details.delta;
-                    },
+                    onPanUpdate: eventHandler.handlePanUpdate,
                     child: Container(
                       color: Colors.transparent,
                     ),
