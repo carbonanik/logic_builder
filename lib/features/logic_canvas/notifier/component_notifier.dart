@@ -33,11 +33,14 @@ class ComponentNotifier extends ChangeNotifier {
   final List<DiscreteComponent> _components = [];
   final Map<String, DiscreteComponent> _componentLookup = {};
 
-  UnmodifiableListView<DiscreteComponent> get components => UnmodifiableListView(_components);
+  UnmodifiableListView<DiscreteComponent> get components =>
+      UnmodifiableListView(_components);
 
-  UnmodifiableMapView<String, DiscreteComponent> get componentLookup => UnmodifiableMapView(_componentLookup);
+  UnmodifiableMapView<String, DiscreteComponent> get componentLookup =>
+      UnmodifiableMapView(_componentLookup);
 
-  void changeComponentInputId(String componentId, String ioId, String replacedIoId) {
+  void changeComponentInputId(
+      String componentId, String ioId, String replacedIoId) {
     final component = _componentLookup[componentId];
     if (component == null) return;
     final inputs = component.inputs;
@@ -68,7 +71,10 @@ class ComponentNotifier extends ChangeNotifier {
     for (var i = 0; i < (inputs?.length ?? 0); i++) {
       if (inputs?[i].connectedWireIds?.contains(wireId) == true) {
         inputs![i] = inputs[i].copyWith(
-          connectedWireIds: inputs[i].connectedWireIds!.where((element) => element != wireId).toList(),
+          connectedWireIds: inputs[i]
+              .connectedWireIds!
+              .where((element) => element != wireId)
+              .toList(),
           id: const Uuid().v4(),
           // new id because inputs id get replaced by connected component output id by changing it we are disconnecting it
         );
@@ -77,7 +83,9 @@ class ComponentNotifier extends ChangeNotifier {
     var output = component?.output;
     if (output?.connectedWireIds?.contains(wireId) == true) {
       output = output?.copyWith(
-        connectedWireIds: output.connectedWireIds!.where((element) => element != wireId).toList(),
+        connectedWireIds: output.connectedWireIds!
+            .where((element) => element != wireId)
+            .toList(),
       );
     }
     final newComponent = component?.copyWith(inputs: inputs, output: output);
@@ -108,7 +116,8 @@ class ComponentNotifier extends ChangeNotifier {
     for (var i = 0; i < components.length; i++) {
       component = components[i];
       final topLeft = component.pos;
-      final bottomRight = component.pos + Offset(component.size.width, component.size.height);
+      final bottomRight =
+          component.pos + Offset(component.size.width, component.size.height);
       if (mousePos.dx >= topLeft.dx &&
           mousePos.dx <= bottomRight.dx &&
           mousePos.dy >= topLeft.dy &&
@@ -148,12 +157,14 @@ class ComponentNotifier extends ChangeNotifier {
     final inputs = component.inputs;
     for (var i = 0; i < component.inputs.length; i++) {
       if (component.inputs[i].id == ioId) {
-        inputs[i] = inputs[i].copyWith(connectedWireIds: (inputs[i].connectedWireIds ?? [])..add(wireId));
+        inputs[i] = inputs[i].copyWith(
+            connectedWireIds: (inputs[i].connectedWireIds ?? [])..add(wireId));
       }
     }
     var output = component.output;
     if (output.id == ioId) {
-      output = output.copyWith(connectedWireIds: (output.connectedWireIds ?? [])..add(wireId));
+      output = output.copyWith(
+          connectedWireIds: (output.connectedWireIds ?? [])..add(wireId));
     }
     final newComponent = component.copyWith(inputs: inputs, output: output);
     _update(component, newComponent);
@@ -163,7 +174,8 @@ class ComponentNotifier extends ChangeNotifier {
     final cursorPos = _ref.read(cursorPositionProvider);
     for (var i = 0; i < ios.length; i++) {
       final globalPos = ios[i].pos + componentPos;
-      final isHovered = (globalPos - cursorPos).distance < 10; // TODO this was 6
+      final isHovered =
+          (globalPos - cursorPos).distance < 10; // TODO this was 6
 
       if (isHovered) {
         return MatchedIoData(
@@ -213,17 +225,21 @@ class ComponentNotifier extends ChangeNotifier {
   }
 
   void _evaluate() {
-    DiscreteComponent binaryOp(int Function(int, int) logicFn, DiscreteComponent component) {
+    DiscreteComponent binaryOp(
+        int Function(int, int) logicFn, DiscreteComponent component) {
       final a = _componentLookup[component.inputs[0].id]?.state;
       final b = _componentLookup[component.inputs[1].id]?.state;
       return component.copyWith(state: logicFn(a ?? 0, b ?? 0));
     }
 
+
+
     for (var component in _components) {
       switch (component.type) {
         case DiscreteComponentType.output:
           final a = _componentLookup[component.inputs[0].id]?.state;
-          _componentLookup[component.output.id] = component.copyWith(state: a ?? 0);
+          _componentLookup[component.output.id] =
+              component.copyWith(state: a ?? 0);
           break;
         case DiscreteComponentType.controlled:
           break;
@@ -241,7 +257,8 @@ class ComponentNotifier extends ChangeNotifier {
           break;
         case DiscreteComponentType.not:
           final a = _componentLookup[component.inputs[0].id]?.state;
-          _componentLookup[component.output.id] = component.copyWith(state: not(a ?? 0));
+          _componentLookup[component.output.id] =
+              component.copyWith(state: not(a ?? 0));
           break;
       }
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logic_builder/features/logic_canvas/canvas_page.dart';
+import 'package:logic_builder/features/logic_canvas/presentation/mode.dart';
 import 'package:logic_builder/features/logic_canvas/provider/component_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/cursor_position_state_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/drawing_mode_provider.dart';
@@ -16,14 +16,18 @@ class EventsHandler {
   EventsHandler(this._ref);
 
   void handleOnKey(value) {
-    if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.escape) {
+    if (value is RawKeyDownEvent &&
+        value.data.physicalKey == PhysicalKeyboardKey.escape) {
       wireDiscard();
       _ref.read(selectedComponentProvider.notifier).state = null;
-    } else if (value is RawKeyDownEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+    } else if (value is RawKeyDownEvent &&
+        value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
       _ref.read(isControlPressed.notifier).state = true;
-    } else if (value is RawKeyUpEvent && value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+    } else if (value is RawKeyUpEvent &&
+        value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
       _ref.read(isControlPressed.notifier).state = false;
-    } else if (value is RawKeyUpEvent && value.physicalKey == PhysicalKeyboardKey.delete) {
+    } else if (value is RawKeyUpEvent &&
+        value.physicalKey == PhysicalKeyboardKey.delete) {
       handleDeleteKeypress();
     }
   }

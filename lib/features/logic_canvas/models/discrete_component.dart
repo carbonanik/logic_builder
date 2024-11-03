@@ -8,9 +8,6 @@ import 'package:logic_builder/features/logic_canvas/models/component_view_type.d
 import 'package:logic_builder/features/logic_canvas/models/discrete_component_type.dart';
 import 'package:logic_builder/features/logic_canvas/models/io.dart';
 
-
-
-
 class DiscreteComponent {
   final IO output;
   final DiscreteComponentType type;
@@ -71,12 +68,14 @@ class DiscreteComponent {
     return DiscreteComponent(
       output: IO.fromMap(map['output']),
       inputs: (map['inputs'] as List).map((e) => IO.fromMap(e)).toList(),
-      type: DiscreteComponentType.values.firstWhere((element) => element.name == map['type']),
-      viewType: ComponentViewType.values.firstWhere((element) => element.name == map['viewType']),
+      type: DiscreteComponentType.values
+          .firstWhere((element) => element.name == map['type']),
+      viewType: ComponentViewType.values
+          .firstWhere((element) => element.name == map['viewType']),
       name: map['name'],
       state: map['state'],
       pos: offsetFromMap(map['pos']),
-      size: sizeFromMap( map['size']),
+      size: sizeFromMap(map['size']),
     );
   }
 }
@@ -89,7 +88,8 @@ DiscreteComponent createDiscreteComponent({
   required DiscreteComponentType type,
   required ComponentViewType viewType,
 }) {
-  final double height = _calculateHeight(inputIds.isEmpty ? 1 : inputIds.length);
+  final double height =
+      _calculateHeight(inputIds.isEmpty ? 1 : inputIds.length);
   final double width = _calculateWidth(name);
   final size = Size(width, height);
   final inputs = generateIOs(inputIds, 0, size.height);

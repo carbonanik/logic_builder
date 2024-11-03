@@ -24,7 +24,7 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
         useMaterial3: true,
       ),
-      home:  const GridPage(),
+      home: const GridPage(),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
-import 'package:logic_builder/features/logic_canvas/canvas_page.dart';
+import 'package:logic_builder/features/logic_canvas/presentation/canvas_page.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/models/module.dart';
 import 'package:logic_builder/features/logic_grid/provider/module_names_provider.dart';
