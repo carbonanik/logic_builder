@@ -5,13 +5,13 @@
 <h1 align="center">Logic Builder</h1>
 <p align="center">Friendly 👋 and lightweight 🚀 tool 🔬 to Design digital logic circuits 🧮</p>
 
-<p align="center">
+<!-- <p align="center">
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/build-passing-green" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/flutter-3.0-blue" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/dart-3.0-blue" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/github/repo-size/carbonanik/logic_builder" height="20"/></a>
 <a href="https://github.com/carbonanik/logic_builder#"><img src="https://img.shields.io/badge/license-MIT-red" height="20"/></a>
-</p>
+</p> -->
 
 <p align="center"><a href="https://github.com/carbonanik/logic_builder#logic-builder"><img src="screenshot/and-gate.gif" width="100%"/></a></p><br/>
 
