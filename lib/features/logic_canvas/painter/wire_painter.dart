@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logic_builder/features/logic_canvas/models/wire.dart';
+import 'package:logic_builder/features/logic_canvas/painter/canvas_style.dart';
 
 class WirePainter extends CustomPainter {
   final List<Wire> wires;
-  final Map <String, Wire> wiresLookup;
+  final Map<String, Wire> wiresLookup;
   final Offset cursorPos;
   final bool drawingWire;
   final Offset panOffset;
@@ -16,20 +17,15 @@ class WirePainter extends CustomPainter {
     required this.panOffset,
   });
 
-  final rectPaint = Paint()..style = PaintingStyle.fill;
+  final rectPaint = CanvasPaints.rectPaint;
 
-  final inputPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.blue;
+  final inputPaint = CanvasPaints.inputPaint;
 
-  final outputPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.red;
+  final outputPaint = CanvasPaints.outputPaint;
 
-  final hoverIoPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.grey;
+  final hoverIoPaint = CanvasPaints.hoverIoPaint;
 
+  final linePaint = CanvasPaints.linePaint;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -53,7 +49,8 @@ class WirePainter extends CustomPainter {
         final point = wire[i] + panOffset;
         final prevPoint = wire[i - 1] + panOffset;
         final nextPoint = wire[i + 1] + panOffset;
-        if ((point - prevPoint).distance < 30 || (point - nextPoint).distance < 30) {
+        if ((point - prevPoint).distance < 30 ||
+            (point - nextPoint).distance < 30) {
           path.lineTo(point.dx, point.dy);
         } else {
           path.roundCornerLineTo(point, prevPoint, nextPoint);
@@ -62,7 +59,7 @@ class WirePainter extends CustomPainter {
 
       final lastPoint = wire.last + panOffset;
       path.lineTo(lastPoint.dx, lastPoint.dy);
-      canvas.drawPath(path, wire.paint);
+      canvas.drawPath(path, linePaint);
     }
 
     // if (wires.isNotEmpty && wires.last.isNotEmpty && drawingWire) {

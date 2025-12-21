@@ -35,7 +35,8 @@ class GridPage extends StatelessWidget {
                       'Logic Builder',
                       style: TextStyle(
                         color: Colors.grey[400],
-                        fontSize: (defaultTargetPlatform == TargetPlatform.iOS ||
+                        fontSize: (defaultTargetPlatform ==
+                                    TargetPlatform.iOS ||
                                 defaultTargetPlatform == TargetPlatform.android)
                             ? 40
                             : 80,
@@ -49,10 +50,12 @@ class GridPage extends StatelessWidget {
                         "Friendly and lightweight tool to Design digital logic circuits",
                         style: TextStyle(
                           color: Colors.grey[400],
-                          fontSize: (defaultTargetPlatform == TargetPlatform.iOS ||
-                                  defaultTargetPlatform == TargetPlatform.android)
-                              ? 16
-                              : 20,
+                          fontSize:
+                              (defaultTargetPlatform == TargetPlatform.iOS ||
+                                      defaultTargetPlatform ==
+                                          TargetPlatform.android)
+                                  ? 16
+                                  : 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ))
@@ -85,7 +88,8 @@ class GridPage extends StatelessWidget {
                                     modulesKeys[index - 1],
                                     index,
                                     context,
-                                    modulesNamesMap[modulesKeys[index - 1]] ?? "Project",
+                                    modulesNamesMap[modulesKeys[index - 1]] ??
+                                        "Project",
                                   ),
                                 );
                         },
@@ -114,7 +118,7 @@ class GridPage extends StatelessWidget {
         ref.read(titleProvider.notifier).state = moduleName;
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => CanvasPage(),
+            builder: (context) => const CanvasPage(),
           ),
         );
       },
@@ -150,7 +154,8 @@ class GridPage extends StatelessWidget {
               onTap: () async {
                 final controller = TextEditingController();
                 final AlertDialog dialog = buildDialog(controller, context);
-                final name = await showDialog<String?>(context: context, builder: (context) => dialog);
+                final name = await showDialog<String?>(
+                    context: context, builder: (context) => dialog);
                 if (name == null) {
                   return;
                 }
@@ -172,9 +177,11 @@ class GridPage extends StatelessWidget {
                 ref.read(openModuleIdProvider.notifier).state = openModuleId;
                 ref.read(titleProvider.notifier).state = name;
                 controller.dispose();
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CanvasPage(),
-                ));
+                if (context.mounted) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const CanvasPage(),
+                  ));
+                }
               },
               child: Container(
                 height: 70,
@@ -196,7 +203,8 @@ class GridPage extends StatelessWidget {
     );
   }
 
-  AlertDialog buildDialog(TextEditingController controller, BuildContext context) {
+  AlertDialog buildDialog(
+      TextEditingController controller, BuildContext context) {
     return AlertDialog(
       title: const Text(
         "Create New Project",

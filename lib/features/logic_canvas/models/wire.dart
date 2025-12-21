@@ -6,7 +6,7 @@ class Wire {
   final List<Offset> _points;
   final Color color;
   final double width;
-  final Paint paint;
+  // final Paint paint;
   final String connectionId;
   final String startComponentId;
   final String? endComponentId;
@@ -21,12 +21,12 @@ class Wire {
     required this.startComponentId,
     this.endComponentId,
     required this.startFromInput,
-  })  : _points = points,
-        paint = Paint()
-          ..color = color
-          ..strokeWidth = width
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round;
+  }) : _points = points;
+  // paint = Paint()
+  //   ..color = color
+  //   ..strokeWidth = width
+  //   ..style = PaintingStyle.stroke
+  //   ..strokeCap = StrokeCap.round;
 
   void addPoint(Offset point) {
     _points.add(point);
@@ -58,7 +58,7 @@ class Wire {
     return {
       'id': id,
       'points': _points.map((point) => point.toMap()).toList(),
-      'color': color.value,
+      'color': color.toARGB32(),
       'width': width,
       'connectionId': connectionId,
       'startComponentId': startComponentId,
@@ -70,7 +70,8 @@ class Wire {
   static Wire fromMap(Map<String, dynamic> map) {
     return Wire(
       id: map['id'],
-      points: (map['points'] as List).map((point) => offsetFromMap(point)).toList(),
+      points:
+          (map['points'] as List).map((point) => offsetFromMap(point)).toList(),
       color: Color(map['color']),
       width: map['width'],
       connectionId: map['connectionId'],

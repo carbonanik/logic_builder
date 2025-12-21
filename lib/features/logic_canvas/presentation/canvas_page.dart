@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:logic_builder/features/logic_canvas/presentation/widgets/drawing_board.dart';
 import 'package:logic_builder/features/logic_canvas/presentation/widgets/tool_bar.dart';
@@ -24,7 +22,7 @@ class CanvasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           DrawingBoard(),
@@ -34,5 +32,3 @@ class CanvasPage extends StatelessWidget {
     );
   }
 }
-
-

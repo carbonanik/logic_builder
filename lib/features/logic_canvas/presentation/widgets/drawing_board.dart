@@ -86,9 +86,9 @@ class DrawingBoard extends StatelessWidget {
         Consumer(
           builder: (context, ref, child) {
             final eventHandler = ref.watch(eventHandlerProvider);
-            return RawKeyboardListener(
+            return KeyboardListener(
               focusNode: keyboardFocusNode,
-              onKey: eventHandler.handleOnKey,
+              onKeyEvent: eventHandler.handleOnKey,
               child: Listener(
                 onPointerHover: eventHandler.handlePointerHover,
                 child: GestureDetector(

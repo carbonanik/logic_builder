@@ -121,7 +121,9 @@ class ComponentNotifier extends ChangeNotifier {
       if (mousePos.dx >= topLeft.dx &&
           mousePos.dx <= bottomRight.dx &&
           mousePos.dy >= topLeft.dy &&
-          mousePos.dy <= bottomRight.dy) return component;
+          mousePos.dy <= bottomRight.dy) {
+        return component;
+      }
     }
     return null;
   }
@@ -174,8 +176,7 @@ class ComponentNotifier extends ChangeNotifier {
     final cursorPos = _ref.read(cursorPositionProvider);
     for (var i = 0; i < ios.length; i++) {
       final globalPos = ios[i].pos + componentPos;
-      final isHovered =
-          (globalPos - cursorPos).distance < 10; // TODO this was 6
+      final isHovered = (globalPos - cursorPos).distance < 10;
 
       if (isHovered) {
         return MatchedIoData(
@@ -231,8 +232,6 @@ class ComponentNotifier extends ChangeNotifier {
       final b = _componentLookup[component.inputs[1].id]?.state;
       return component.copyWith(state: logicFn(a ?? 0, b ?? 0));
     }
-
-
 
     for (var component in _components) {
       switch (component.type) {

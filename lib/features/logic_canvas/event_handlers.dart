@@ -16,17 +16,17 @@ class EventsHandler {
   EventsHandler(this._ref);
 
   void handleOnKey(value) {
-    if (value is RawKeyDownEvent &&
-        value.data.physicalKey == PhysicalKeyboardKey.escape) {
+    if (value is KeyDownEvent &&
+        value.physicalKey == PhysicalKeyboardKey.escape) {
       wireDiscard();
       _ref.read(selectedComponentProvider.notifier).state = null;
-    } else if (value is RawKeyDownEvent &&
-        value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+    } else if (value is KeyDownEvent &&
+        value.physicalKey == PhysicalKeyboardKey.controlLeft) {
       _ref.read(isControlPressed.notifier).state = true;
-    } else if (value is RawKeyUpEvent &&
-        value.data.physicalKey == PhysicalKeyboardKey.controlLeft) {
+    } else if (value is KeyUpEvent &&
+        value.physicalKey == PhysicalKeyboardKey.controlLeft) {
       _ref.read(isControlPressed.notifier).state = false;
-    } else if (value is RawKeyUpEvent &&
+    } else if (value is KeyUpEvent &&
         value.physicalKey == PhysicalKeyboardKey.delete) {
       handleDeleteKeypress();
     }

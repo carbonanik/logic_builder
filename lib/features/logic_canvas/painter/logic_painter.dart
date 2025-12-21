@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logic_builder/features/logic_canvas/models/component_view_type.dart';
+import 'package:logic_builder/features/logic_canvas/painter/canvas_style.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component.dart';
 import 'package:logic_builder/features/logic_canvas/models/io.dart';
 
@@ -7,42 +8,26 @@ class LogicPainter extends CustomPainter {
   final List<DiscreteComponent> components;
   final Map<String, DiscreteComponent> componentLookup;
   final Offset cursorPos;
-  // final DiscreteComponent? selectedComponent;
-  // final bool drawingComponent;
   final Offset panOffset;
 
   LogicPainter({
     required this.components,
     required this.componentLookup,
     required this.cursorPos,
-    // required this.selectedComponent,
-    // required this.drawingComponent,
     required this.panOffset,
   });
 
-  final rectPaint = Paint()..style = PaintingStyle.fill;
+  final rectPaint = CanvasPaints.rectPaint;
 
-  final highPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.red;
+  final highPaint = CanvasPaints.highPaint;
 
-  final lowPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.grey[800]!;
+  final lowPaint = CanvasPaints.lowPaint;
 
-  final floatingPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.black;
+  final floatingPaint = CanvasPaints.floatingPaint;
 
-  final hoverIoPaint = Paint()
-    ..style = PaintingStyle.fill
-    ..color = Colors.grey;
+  final hoverIoPaint = CanvasPaints.hoverIoPaint;
 
-  final linePaint = Paint()
-    ..color = Colors.grey
-    ..strokeWidth = 2
-    ..style = PaintingStyle.stroke
-    ..strokeCap = StrokeCap.round;
+  final linePaint = CanvasPaints.linePaint;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -54,10 +39,10 @@ class LogicPainter extends CustomPainter {
     return true;
   }
 
-
   void drawComponent(Canvas canvas, Size size) {
     for (int i = 0; i < components.length; i++) {
-      final component = components[i].copyWith(pos: components[i].pos + panOffset);
+      final component =
+          components[i].copyWith(pos: components[i].pos + panOffset);
 
       switch (components[i].viewType) {
         case ComponentViewType.basicPart:
@@ -98,7 +83,9 @@ class LogicPainter extends CustomPainter {
     canvas.drawRect(
       Rect.fromPoints(
         component.pos + pad,
-        Offset(component.size.width, component.size.height) + component.pos - pad,
+        Offset(component.size.width, component.size.height) +
+            component.pos -
+            pad,
       ),
       component.state == 0 ? lowPaint : highPaint,
     );
@@ -122,7 +109,9 @@ class LogicPainter extends CustomPainter {
     canvas.drawRect(
       Rect.fromPoints(
         component.pos + pad,
-        Offset(component.size.width, component.size.height) + component.pos - pad,
+        Offset(component.size.width, component.size.height) +
+            component.pos -
+            pad,
       ),
       component.state == 0 ? lowPaint : highPaint,
     );
