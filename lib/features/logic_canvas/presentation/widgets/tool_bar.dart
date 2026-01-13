@@ -86,25 +86,54 @@ class ToolBar extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Consumer(builder: (context, ref, child) {
         final selectedComponent = ref.watch(selectedComponentProvider);
+        final allModules = ref.watch(allModulesProvider).value ?? [];
+        final openModuleId = ref.watch(openModuleIdProvider);
+
+        final modulesToDisplay =
+            allModules.where((m) => m.id != openModuleId).toList();
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-              reservedComponents.length,
-              (index) {
-                final component = reservedComponents[index];
-                final isSelected = selectedComponent == component;
-                return ComponentButton(
-                  name: component.name,
-                  onTap: () => selectComponent(ref, component),
-                  color: componentButtonColor(isSelected),
-                  textColor: componentButtonTextColor(isSelected),
-                  key: Key(component.name),
-                );
-              },
-            ),
+            children: [
+              ...List.generate(
+                reservedComponents.length,
+                (index) {
+                  final component = reservedComponents[index];
+                  final isSelected =
+                      selectedComponent?.type == component.type &&
+                          selectedComponent?.moduleId == null;
+                  return ComponentButton(
+                    name: component.name,
+                    onTap: () => selectComponent(ref, component),
+                    color: componentButtonColor(isSelected),
+                    textColor: componentButtonTextColor(isSelected),
+                    key: Key(component.name),
+                  );
+                },
+              ),
+              ...List.generate(
+                modulesToDisplay.length,
+                (index) {
+                  final module = modulesToDisplay[index];
+                  final isSelected = selectedComponent?.moduleId == module.id;
+                  return ComponentButton(
+                    name: module.name,
+                    onTap: () {
+                      final comp = createComposedComponent(
+                        module: module,
+                        pos: Offset.zero,
+                      );
+                      selectComponent(ref, comp);
+                    },
+                    color: componentButtonColor(isSelected),
+                    textColor: componentButtonTextColor(isSelected),
+                    key: Key(module.name),
+                  );
+                },
+              ),
+            ],
           ),
         );
       }),

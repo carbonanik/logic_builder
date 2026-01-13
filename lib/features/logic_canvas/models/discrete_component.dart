@@ -7,75 +7,102 @@ import 'package:uuid/uuid.dart';
 import 'package:logic_builder/features/logic_canvas/models/component_view_type.dart';
 import 'package:logic_builder/features/logic_canvas/models/discrete_component_type.dart';
 import 'package:logic_builder/features/logic_canvas/models/io.dart';
+import 'package:logic_builder/features/logic_canvas/models/module.dart';
 
 class DiscreteComponent {
-  final IO output;
+  final List<IO> outputs;
   final DiscreteComponentType type;
   final ComponentViewType viewType;
   final String name;
   final List<IO> inputs;
-  final int state;
+  final Map<String, int> outputStates;
   final Offset pos;
   final Size size;
+  final String? moduleId;
+  final Map<String, int>? internalStates;
 
   DiscreteComponent({
-    required this.output,
+    required this.outputs,
     required this.inputs,
     required this.name,
     required this.type,
     required this.viewType,
-    required this.state,
+    required this.outputStates,
     required this.pos,
     required this.size,
+    this.moduleId,
+    this.internalStates,
   });
 
+  IO get output => outputs.first;
+  int get state =>
+      outputStates.values.isNotEmpty ? outputStates.values.first : 0;
+  int getState(String ioId) => outputStates[ioId] ?? 0;
+
   DiscreteComponent copyWith({
-    IO? output,
+    List<IO>? outputs,
     DiscreteComponentType? type,
     ComponentViewType? viewType,
     String? name,
     List<IO>? inputs,
-    int? state,
+    Map<String, int>? outputStates,
     Offset? pos,
     Size? size,
+    String? moduleId,
+    Map<String, int>? internalStates,
   }) {
     return DiscreteComponent(
-      output: output ?? this.output,
+      outputs: outputs ?? this.outputs,
       type: type ?? this.type,
       viewType: viewType ?? this.viewType,
       name: name ?? this.name,
       inputs: inputs ?? this.inputs,
-      state: state ?? this.state,
+      outputStates: outputStates ?? this.outputStates,
       pos: pos ?? this.pos,
       size: size ?? this.size,
+      moduleId: moduleId ?? this.moduleId,
+      internalStates: internalStates ?? this.internalStates,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'output': output.toMap(),
+      'outputs': outputs.map((e) => e.toMap()).toList(),
       'inputs': inputs.map((e) => e.toMap()).toList(),
       'type': type.name,
       'viewType': viewType.name,
       'name': name,
-      'state': state,
+      'outputStates': outputStates,
       'pos': pos.toMap(),
       'size': size.toMap(),
+      'moduleId': moduleId,
+      'internalStates': internalStates,
     };
   }
 
   factory DiscreteComponent.fromMap(Map<String, dynamic> map) {
     return DiscreteComponent(
-      output: IO.fromMap(map['output']),
+      outputs: map['outputs'] != null
+          ? (map['outputs'] as List).map((e) => IO.fromMap(e)).toList()
+          : [IO.fromMap(map['output'])],
       inputs: (map['inputs'] as List).map((e) => IO.fromMap(e)).toList(),
       type: DiscreteComponentType.values
           .firstWhere((element) => element.name == map['type']),
       viewType: ComponentViewType.values
           .firstWhere((element) => element.name == map['viewType']),
       name: map['name'],
-      state: map['state'],
+      outputStates: map['outputStates'] != null
+          ? Map<String, int>.from(map['outputStates'])
+          : {
+              ((map['outputs'] as List?)?.first['id'] ?? map['output']['id']):
+                  map['state'] ?? 0
+            },
       pos: offsetFromMap(map['pos']),
       size: sizeFromMap(map['size']),
+      moduleId: map['moduleId'],
+      internalStates: map['internalStates'] != null
+          ? Map<String, int>.from(map['internalStates'])
+          : null,
     );
   }
 }
@@ -100,14 +127,60 @@ DiscreteComponent createDiscreteComponent({
   );
 
   return DiscreteComponent(
-    output: output,
+    outputs: [output],
     inputs: inputs,
     type: type,
     viewType: viewType,
     name: name,
     pos: pos,
     size: size,
-    state: 0,
+    outputStates: {outputId: 0},
+  );
+}
+
+DiscreteComponent createComposedComponent({
+  required Module module,
+  required Offset pos,
+}) {
+  // Find controlled components for inputs
+  final inputComponents = module.components
+      .where((c) => c.type == DiscreteComponentType.controlled)
+      .toList();
+  // Find output components for outputs
+  final outputComponents = module.components
+      .where((c) => c.type == DiscreteComponentType.output)
+      .toList();
+
+  final size =
+      measureSize(inputComponents.length, outputComponents.length, module.name);
+
+  final inputs = generateIOs(
+      inputComponents.map((c) => c.output.id).toList(), 0, size.height);
+
+  // Custom generateIOs for outputs on the right side
+  final outputs = List.generate(
+    outputComponents.length,
+    (index) => IO(
+      id: outputComponents[index].output.id,
+      name: outputComponents[index].name,
+      pos: Offset(
+          size.width,
+          _calculateHeight(index) +
+              (size.height - _calculateHeight(outputComponents.length)) / 2),
+    ),
+  );
+
+  return DiscreteComponent(
+    outputs: outputs,
+    inputs: inputs,
+    type: DiscreteComponentType.module,
+    viewType: ComponentViewType.basicPart, // Or a new one
+    name: module.name,
+    pos: pos,
+    size: size,
+    outputStates: {for (var o in outputs) o.id: 0},
+    moduleId: module.id,
+    internalStates: {},
   );
 }
 
@@ -259,5 +332,8 @@ DiscreteComponent createComponent(DiscreteComponentType type) {
       return createControlledComponent();
     case DiscreteComponentType.output:
       return createOutputComponent();
+    case DiscreteComponentType.module:
+      throw UnimplementedError(
+          "Module component creation requires a Module object");
   }
 }

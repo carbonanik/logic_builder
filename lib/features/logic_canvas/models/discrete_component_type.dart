@@ -6,4 +6,5 @@ enum DiscreteComponentType {
   nor,
   controlled,
   output,
+  module,
 }

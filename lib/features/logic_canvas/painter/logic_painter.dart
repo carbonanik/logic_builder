@@ -65,7 +65,7 @@ class LogicPainter extends CustomPainter {
     );
 
     drawIOs(canvas, component.inputs, component.pos, true);
-    drawIOs(canvas, [component.output], component.pos, false);
+    drawIOs(canvas, component.outputs, component.pos, false);
 
     drawTitle(canvas, component, Colors.grey[800]!);
   }
@@ -91,7 +91,7 @@ class LogicPainter extends CustomPainter {
     );
 
     // drawIOs(canvas, component.inputs, component.pos, true);
-    drawIOs(canvas, [component.output], component.pos, false);
+    drawIOs(canvas, component.outputs, component.pos, false);
 
     drawTitle(canvas, component, Colors.black);
   }
@@ -140,15 +140,37 @@ class LogicPainter extends CustomPainter {
         hovered,
         pos,
         paint ?? floatingPaint,
+        isInput ? ios[i].name : null,
       );
     }
   }
 
-  void drawIO(Canvas canvas, bool hovered, Offset pos, Paint paint) {
+  void drawIO(
+      Canvas canvas, bool hovered, Offset pos, Paint paint, String? label) {
     if (hovered) {
       canvas.drawCircle(pos, 8, hoverIoPaint);
     }
     canvas.drawCircle(pos, 6, paint);
+
+    if (label != null) {
+      final textStyle = TextStyle(
+        color: Colors.grey[600],
+        fontSize: 10,
+      );
+      final textSpan = TextSpan(
+        text: label,
+        style: textStyle,
+      );
+      final textPainter = TextPainter(
+        text: textSpan,
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+      textPainter.paint(
+        canvas,
+        pos + const Offset(8, -5),
+      );
+    }
   }
 
   void drawTitle(Canvas canvas, DiscreteComponent component, Color color) {

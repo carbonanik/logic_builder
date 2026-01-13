@@ -19,4 +19,21 @@ class ModuleStore {
     }
     return Module.fromMap(jsonDecode(map));
   }
+
+  Future<List<String>> getAllModuleIds() async {
+    final box = Hive.lazyBox<String>(moduleBox);
+    return box.keys.cast<String>().toList();
+  }
+
+  Future<List<Module>> getAllModules() async {
+    final ids = await getAllModuleIds();
+    final modules = <Module>[];
+    for (var id in ids) {
+      final module = await getModule(id);
+      if (module != null) {
+        modules.add(module);
+      }
+    }
+    return modules;
+  }
 }
