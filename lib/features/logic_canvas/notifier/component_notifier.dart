@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
@@ -25,6 +26,23 @@ class ComponentNotifier extends ChangeNotifier {
       _ref.read(isSavedProvider.notifier).state = true;
       notifyListeners();
     });
+    _startClock();
+  }
+
+  int _globalClockState = 0;
+  Timer? _clockTimer;
+
+  void _startClock() {
+    _clockTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      _globalClockState = _globalClockState == 1 ? 0 : 1;
+      _onChange();
+    });
+  }
+
+  @override
+  void dispose() {
+    _clockTimer?.cancel();
+    super.dispose();
   }
 
   final Map<String, Module> _moduleCache = {};
@@ -349,6 +367,11 @@ class ComponentNotifier extends ChangeNotifier {
         case DiscreteComponentType.module:
           _evaluateModule(component);
           break;
+        case DiscreteComponentType.clock:
+          _componentLookup[component.output.id] = component.copyWith(
+            outputStates: {component.output.id: _globalClockState},
+          );
+          break;
       }
     }
   }
@@ -408,6 +431,9 @@ class ComponentNotifier extends ChangeNotifier {
           case DiscreteComponentType.module:
             // This would require pre-evaluating sub-modules or more complex logic
             // For now, let's assume one level of module nesting works
+            break;
+          case DiscreteComponentType.clock:
+            newState = _globalClockState;
             break;
         }
         internalStates[innerComp.output.id] = newState;

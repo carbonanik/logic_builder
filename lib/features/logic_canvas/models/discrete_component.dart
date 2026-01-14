@@ -316,6 +316,20 @@ DiscreteComponent createOutputComponent() {
   );
 }
 
+DiscreteComponent createClockComponent() {
+  final ownId = const Uuid().v4();
+
+  return createDiscreteComponent(
+    inputIds: [],
+    outputId: ownId,
+    pos: Offset.zero,
+    name: "Clock",
+    type: DiscreteComponentType.clock,
+    viewType: ComponentViewType
+        .controlledSwitch, // Using switch view for simplicity for now
+  );
+}
+
 DiscreteComponent createComponent(DiscreteComponentType type) {
   switch (type) {
     case DiscreteComponentType.not:
@@ -335,5 +349,7 @@ DiscreteComponent createComponent(DiscreteComponentType type) {
     case DiscreteComponentType.module:
       throw UnimplementedError(
           "Module component creation requires a Module object");
+    case DiscreteComponentType.clock:
+      return createClockComponent();
   }
 }

@@ -7,4 +7,5 @@ enum DiscreteComponentType {
   controlled,
   output,
   module,
+  clock,
 }

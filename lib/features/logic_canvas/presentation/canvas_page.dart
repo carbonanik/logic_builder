@@ -12,6 +12,7 @@ final reservedComponents = [
   createComponent(DiscreteComponentType.nor),
   createComponent(DiscreteComponentType.controlled),
   createComponent(DiscreteComponentType.output),
+  createComponent(DiscreteComponentType.clock),
 ];
 
 const selectionColor = Colors.redAccent;
