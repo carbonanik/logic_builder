@@ -15,6 +15,7 @@ import 'package:logic_builder/features/logic_canvas/models/module.dart';
 import 'package:logic_builder/features/logic_canvas/provider/cursor_position_state_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/selected_component_provider.dart';
 import 'package:logic_builder/features/logic_canvas/provider/wires_provider.dart';
+import '../provider/service_provider.dart';
 
 class ComponentNotifier extends ChangeNotifier {
   final Ref _ref;
@@ -100,46 +101,17 @@ class ComponentNotifier extends ChangeNotifier {
     final selectedComponent = _ref.read(selectedComponentProvider);
     if (selectedComponent == null) return;
 
+    final service = _ref.read(componentServiceProvider);
     DiscreteComponent comp;
     if (selectedComponent.type == DiscreteComponentType.module) {
-      comp =
-          _refreshComponentIds(selectedComponent).copyWith(pos: localPosition);
+      comp = service
+          .refreshComponentIds(selectedComponent)
+          .copyWith(pos: localPosition);
     } else {
       comp =
           createComponent(selectedComponent.type).copyWith(pos: localPosition);
     }
     _add(comp);
-  }
-
-  DiscreteComponent _refreshComponentIds(DiscreteComponent component) {
-    final idMap = <String, String>{};
-
-    final newInputs = component.inputs.map((io) {
-      final newId = const Uuid().v4();
-      idMap[io.id] = newId;
-      return io.copyWith(id: newId, connectedWireIds: []);
-    }).toList();
-
-    final newOutputs = component.outputs.map((io) {
-      final newId = const Uuid().v4();
-      idMap[io.id] = newId;
-      return io.copyWith(id: newId, connectedWireIds: []);
-    }).toList();
-
-    final newOutputStates = <String, int>{};
-    for (var entry in component.outputStates.entries) {
-      if (idMap.containsKey(entry.key)) {
-        newOutputStates[idMap[entry.key]!] = entry.value;
-      } else {
-        newOutputStates[entry.key] = entry.value;
-      }
-    }
-
-    return component.copyWith(
-      inputs: newInputs,
-      outputs: newOutputs,
-      outputStates: newOutputStates,
-    );
   }
 
   void removeWireIDFromComponentIO(String componentId, String wireId) {
@@ -314,161 +286,13 @@ class ComponentNotifier extends ChangeNotifier {
   }
 
   void _runLogics() {
+    final simulator = _ref.read(logicSimulatorProvider);
     const evalPerStep = 5;
     for (var j = 0; j < evalPerStep; j++) {
-      _evaluate();
+      simulator.evaluate(
+          _components, _componentLookup, _moduleCache, _globalClockState);
     }
     _components.clear();
     _components.addAll(_componentLookup.values);
   }
-
-  void _evaluate() {
-    DiscreteComponent binaryOp(
-        int Function(int, int) logicFn, DiscreteComponent component) {
-      final a = _componentLookup[component.inputs[0].id]
-          ?.getState(component.inputs[0].id);
-      final b = _componentLookup[component.inputs[1].id]
-          ?.getState(component.inputs[1].id);
-      return component.copyWith(
-        outputStates: {component.output.id: logicFn(a ?? 0, b ?? 0)},
-      );
-    }
-
-    for (var component in _components) {
-      switch (component.type) {
-        case DiscreteComponentType.output:
-          final a = _componentLookup[component.inputs[0].id]
-              ?.getState(component.inputs[0].id);
-          _componentLookup[component.output.id] = component.copyWith(
-            outputStates: {component.output.id: a ?? 0},
-          );
-          break;
-        case DiscreteComponentType.controlled:
-          break;
-        case DiscreteComponentType.and:
-          _componentLookup[component.output.id] = binaryOp(and, component);
-          break;
-        case DiscreteComponentType.nand:
-          _componentLookup[component.output.id] = binaryOp(nand, component);
-          break;
-        case DiscreteComponentType.or:
-          _componentLookup[component.output.id] = binaryOp(or, component);
-          break;
-        case DiscreteComponentType.nor:
-          _componentLookup[component.output.id] = binaryOp(nor, component);
-          break;
-        case DiscreteComponentType.not:
-          final a = _componentLookup[component.inputs[0].id]
-              ?.getState(component.inputs[0].id);
-          _componentLookup[component.output.id] = component.copyWith(
-            outputStates: {component.output.id: not(a ?? 0)},
-          );
-          break;
-        case DiscreteComponentType.module:
-          _evaluateModule(component);
-          break;
-        case DiscreteComponentType.clock:
-          _componentLookup[component.output.id] = component.copyWith(
-            outputStates: {component.output.id: _globalClockState},
-          );
-          break;
-      }
-    }
-  }
-
-  void _evaluateModule(DiscreteComponent component) {
-    if (component.moduleId == null) return;
-    final module = _moduleCache[component.moduleId];
-    if (module == null) return;
-
-    final internalStates =
-        Map<String, int>.from(component.internalStates ?? {});
-
-    final inputComponents = module.components
-        .where((c) => c.type == DiscreteComponentType.controlled)
-        .toList();
-
-    for (int i = 0; i < component.inputs.length; i++) {
-      if (i >= inputComponents.length) break;
-      final internalIOId = inputComponents[i].output.id;
-      final externalInputState = _componentLookup[component.inputs[i].id]
-              ?.getState(component.inputs[i].id) ??
-          0;
-      internalStates[internalIOId] = externalInputState;
-    }
-
-    const internalEvalSteps = 3;
-    for (int step = 0; step < internalEvalSteps; step++) {
-      for (var innerComp in module.components) {
-        if (innerComp.type == DiscreteComponentType.controlled) continue;
-
-        int newState = 0;
-        switch (innerComp.type) {
-          case DiscreteComponentType.output:
-            newState = internalStates[innerComp.inputs[0].id] ?? 0;
-            break;
-          case DiscreteComponentType.and:
-            newState = and(internalStates[innerComp.inputs[0].id] ?? 0,
-                internalStates[innerComp.inputs[1].id] ?? 0);
-            break;
-          case DiscreteComponentType.nand:
-            newState = nand(internalStates[innerComp.inputs[0].id] ?? 0,
-                internalStates[innerComp.inputs[1].id] ?? 0);
-            break;
-          case DiscreteComponentType.or:
-            newState = or(internalStates[innerComp.inputs[0].id] ?? 0,
-                internalStates[innerComp.inputs[1].id] ?? 0);
-            break;
-          case DiscreteComponentType.nor:
-            newState = nor(internalStates[innerComp.inputs[0].id] ?? 0,
-                internalStates[innerComp.inputs[1].id] ?? 0);
-            break;
-          case DiscreteComponentType.not:
-            newState = not(internalStates[innerComp.inputs[0].id] ?? 0);
-            break;
-          case DiscreteComponentType.controlled:
-            break;
-          case DiscreteComponentType.module:
-            // This would require pre-evaluating sub-modules or more complex logic
-            // For now, let's assume one level of module nesting works
-            break;
-          case DiscreteComponentType.clock:
-            newState = _globalClockState;
-            break;
-        }
-        internalStates[innerComp.output.id] = newState;
-      }
-    }
-
-    final outputComponents = module.components
-        .where((c) => c.type == DiscreteComponentType.output)
-        .toList();
-
-    final newOutputStates = <String, int>{};
-    for (int i = 0; i < component.outputs.length; i++) {
-      if (i >= outputComponents.length) break;
-      final internalOutputState =
-          internalStates[outputComponents[i].output.id] ?? 0;
-      newOutputStates[component.outputs[i].id] = internalOutputState;
-    }
-
-    final newComponent = component.copyWith(
-      outputStates: newOutputStates,
-      internalStates: internalStates,
-    );
-
-    for (var output in newComponent.outputs) {
-      _componentLookup[output.id] = newComponent;
-    }
-  }
 }
-
-int not(int a) => ~a & 1;
-
-int and(int a, int b) => a & b;
-
-int nand(int a, int b) => not(and(a, b));
-
-int or(int a, int b) => a | b;
-
-int nor(int a, int b) => not(or(a, b));
