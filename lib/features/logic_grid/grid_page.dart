@@ -122,24 +122,104 @@ class GridPage extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        height: 200,
-        width: 200,
-        color: Colors.grey[800],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.memory_rounded, size: 60, color: Colors.redAccent),
-            Text(moduleName,
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                )),
-          ],
-        ),
+      child: Stack(
+        children: [
+          Container(
+            height: 200,
+            width: 200,
+            color: Colors.grey[800],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.memory_rounded,
+                    size: 60, color: Colors.redAccent),
+                Text(moduleName,
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    )),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 5,
+            right: 5,
+            child: IconButton(
+              onPressed: () =>
+                  _handleDelete(ref, moduleKey, moduleName, context),
+              icon: const Icon(
+                Icons.delete_outline,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Future<void> _handleDelete(
+    WidgetRef ref,
+    String moduleKey,
+    String moduleName,
+    BuildContext context,
+  ) async {
+    final usages = await ref.read(modulesStoreProvider).getUsages(moduleKey);
+
+    if (context.mounted) {
+      if (usages.isNotEmpty) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.grey[800],
+            title: const Text("Cannot Delete",
+                style: TextStyle(color: Colors.white)),
+            content: Text(
+              "This module is being used in the ${usages.join(", ")} module.",
+              style: const TextStyle(color: Colors.white70),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child:
+                    const Text("OK", style: TextStyle(color: Colors.redAccent)),
+              ),
+            ],
+          ),
+        );
+      } else {
+        final confirm = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Colors.grey[800],
+            title: const Text("Delete Module",
+                style: TextStyle(color: Colors.white)),
+            content: Text(
+              "Are you sure you want to delete '$moduleName'?",
+              style: const TextStyle(color: Colors.white70),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child:
+                    const Text("Cancel", style: TextStyle(color: Colors.white)),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Delete",
+                    style: TextStyle(color: Colors.redAccent)),
+              ),
+            ],
+          ),
+        );
+
+        if (confirm == true) {
+          ref.read(moduleNamesProvider.notifier).remove(moduleKey);
+          await ref.read(modulesStoreProvider).deleteModule(moduleKey);
+        }
+      }
+    }
   }
 
   Container buildCreateProjectButton() {

@@ -10,7 +10,13 @@ class ModuleNameStore {
 
   Map<String, String> getModuleNames() {
     final box = Hive.box<String>(moduleNameBox);
-    final names = box.toMap().map((key, value) => MapEntry<String, String>(key, value));
+    final names =
+        box.toMap().map((key, value) => MapEntry<String, String>(key, value));
     return names;
+  }
+
+  Future<void> deleteModuleName(String id) async {
+    final box = Hive.box<String>(moduleNameBox);
+    await box.delete(id);
   }
 }

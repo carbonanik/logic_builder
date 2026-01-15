@@ -36,4 +36,21 @@ class ModuleStore {
     }
     return modules;
   }
+
+  Future<void> deleteModule(String id) async {
+    final box = Hive.lazyBox<String>(moduleBox);
+    await box.delete(id);
+  }
+
+  Future<List<String>> getUsages(String id) async {
+    final modules = await getAllModules();
+    final usages = <String>[];
+    for (var module in modules) {
+      final isUsed = module.components.any((c) => c.moduleId == id);
+      if (isUsed) {
+        usages.add(module.name);
+      }
+    }
+    return usages;
+  }
 }

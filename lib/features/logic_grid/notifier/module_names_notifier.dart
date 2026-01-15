@@ -13,6 +13,13 @@ class ModuleNamesNotifier extends StateNotifier<Map<String, String>> {
     _ref.read(moduleNamesStoreProvider).saveModuleName(id, name);
   }
 
+  void remove(String id) {
+    final newState = Map<String, String>.from(state);
+    newState.remove(id);
+    state = newState;
+    _ref.read(moduleNamesStoreProvider).deleteModuleName(id);
+  }
+
   String? getName(String id) {
     return state[id];
   }
