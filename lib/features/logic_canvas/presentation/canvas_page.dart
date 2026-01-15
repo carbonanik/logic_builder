@@ -9,6 +9,7 @@ import 'package:logic_builder/features/logic_canvas/provider/component_provider.
 import 'package:logic_builder/features/logic_canvas/provider/wires_provider.dart';
 import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
+import 'package:logic_builder/features/providers/title_provider.dart';
 
 final reservedComponents = [
   createComponent(DiscreteComponentType.and),
@@ -44,6 +45,52 @@ class CanvasPage extends ConsumerWidget {
         body: Stack(
           children: [
             DrawingBoard(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + 10,
+                  left: 16,
+                  right: 16,
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.8),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                          color: Colors.white),
+                      onPressed: () => Navigator.of(context).maybePop(),
+                    ),
+                    const SizedBox(width: 8),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final title = ref.watch(titleProvider);
+                        return Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             ToolBar(),
           ],
         ),
@@ -86,6 +133,7 @@ class CanvasPage extends ConsumerWidget {
       await _save(ref);
       return true;
     } else if (result == 'discard') {
+      ref.read(isSavedProvider.notifier).state = true;
       return true;
     }
     return false;

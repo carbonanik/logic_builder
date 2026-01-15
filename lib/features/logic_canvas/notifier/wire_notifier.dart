@@ -33,7 +33,8 @@ class WireNotifier extends ChangeNotifier {
 
   UnmodifiableListView<Wire> get wires => UnmodifiableListView(_wires);
 
-  UnmodifiableMapView<String, Wire> get wiresLookup => UnmodifiableMapView(_wiresLookup);
+  UnmodifiableMapView<String, Wire> get wiresLookup =>
+      UnmodifiableMapView(_wiresLookup);
 
   void _add(Wire wire) {
     _wires.add(wire);
@@ -53,6 +54,7 @@ class WireNotifier extends ChangeNotifier {
     _wires[_wires.indexOf(wire)] = newWire;
     _wiresLookup[wire.id] = newWire;
     _onChange();
+    _ref.read(isSavedProvider.notifier).state = false;
   }
 
   void addWire(Offset localPosition) {
@@ -67,9 +69,13 @@ class WireNotifier extends ChangeNotifier {
   void removeWire(String wireId) {
     if (_wiresLookup.containsKey(wireId)) {
       final wire = _wiresLookup[wireId]!;
-      _ref.read(componentsProvider).removeWireIDFromComponentIO(wire.startComponentId, wireId);
+      _ref
+          .read(componentsProvider)
+          .removeWireIDFromComponentIO(wire.startComponentId, wireId);
       if (wire.endComponentId?.isNotEmpty == true) {
-        _ref.read(componentsProvider).removeWireIDFromComponentIO(wire.endComponentId!, wireId);
+        _ref
+            .read(componentsProvider)
+            .removeWireIDFromComponentIO(wire.endComponentId!, wireId);
       }
       _remove(_wiresLookup[wireId]!);
     }
@@ -81,7 +87,8 @@ class WireNotifier extends ChangeNotifier {
 
     // do not add wire if the input is already connected
     if (ioData.startFromInput) {
-      if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null) return;
+      if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null)
+        return;
     }
     final id = const Uuid().v4();
     _ref.read(currentDrawingWireIdProvider.notifier).state = id;
@@ -96,7 +103,9 @@ class WireNotifier extends ChangeNotifier {
     );
 
     // store wire id in the io
-    _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, id);
+    _ref
+        .read(componentsProvider)
+        .connectIOToWire(ioData.componentId, ioData.ioId, id);
   }
 
   void _addPointToCurrentWire(Offset localPosition) {
@@ -104,7 +113,8 @@ class WireNotifier extends ChangeNotifier {
     if (currentWire == null) return;
 
     // get io data that is clicked
-    final MatchedIoData? ioData = _ref.read(componentsProvider).isMousePointerOnIO();
+    final MatchedIoData? ioData =
+        _ref.read(componentsProvider).isMousePointerOnIO();
     // is clicked on IO ? if it is maybe the wire ends
 
     if (ioData != null) {
@@ -123,16 +133,21 @@ class WireNotifier extends ChangeNotifier {
         _ref.read(eventHandlerProvider).wireDrawingEnd();
 
         // store wire id in the io
-        _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
+        _ref
+            .read(componentsProvider)
+            .connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
 
         // replace the id with the output id that is connected
-        _ref.read(componentsProvider).changeComponentInputId(componentId, ioId, replacedIoId);
+        _ref
+            .read(componentsProvider)
+            .changeComponentInputId(componentId, ioId, replacedIoId);
 
         wireEndComponent(currentWire.id, ioData.componentId);
       } else {
         // started from output ending at input
         // already have a wire connected to the input
-        if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null) return;
+        if (_ref.read(componentsProvider).componentLookup[ioData.ioId] != null)
+          return;
         final componentId = ioData.componentId;
         final ioId = ioData.ioId;
         final replacedIoId = currentWire.connectionId;
@@ -142,9 +157,13 @@ class WireNotifier extends ChangeNotifier {
         _ref.read(eventHandlerProvider).wireDrawingEnd();
 
         // store wire id in the io
-        _ref.read(componentsProvider).connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
+        _ref
+            .read(componentsProvider)
+            .connectIOToWire(ioData.componentId, ioData.ioId, currentWire.id);
 
-        _ref.read(componentsProvider).changeComponentInputId(componentId, ioId, replacedIoId);
+        _ref
+            .read(componentsProvider)
+            .changeComponentInputId(componentId, ioId, replacedIoId);
 
         wireEndComponent(currentWire.id, ioData.componentId);
       }

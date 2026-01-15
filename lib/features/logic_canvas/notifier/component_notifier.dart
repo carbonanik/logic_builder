@@ -269,6 +269,7 @@ class ComponentNotifier extends ChangeNotifier {
       _componentLookup[output.id] = newComponent;
     }
     _onChange();
+    _ref.read(isSavedProvider.notifier).state = false;
   }
 
   void _delete(DiscreteComponent component) {
