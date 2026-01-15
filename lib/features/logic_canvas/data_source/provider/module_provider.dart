@@ -4,7 +4,8 @@ import 'package:logic_builder/features/logic_canvas/models/module.dart';
 
 final modulesStoreProvider = Provider((ref) => ModuleStore());
 
-final allModulesProvider = FutureProvider<List<Module>>((ref) async {
+final allModulesProvider =
+    FutureProvider.autoDispose<List<Module>>((ref) async {
   final store = ref.watch(modulesStoreProvider);
   return store.getAllModules();
 });
