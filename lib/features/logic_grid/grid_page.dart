@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logic_builder/features/logic_grid/provider/open_module_id_provider.dart';
-import 'package:logic_builder/features/logic_canvas/presentation/canvas_page.dart';
 import 'package:logic_builder/features/logic_canvas/data_source/provider/module_provider.dart';
 import 'package:logic_builder/features/logic_canvas/models/module.dart';
 import 'package:logic_builder/features/logic_grid/provider/module_names_provider.dart';
@@ -116,11 +116,7 @@ class GridPage extends StatelessWidget {
       onTap: () {
         ref.read(openModuleIdProvider.notifier).state = moduleKey;
         ref.read(titleProvider.notifier).state = moduleName;
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const CanvasPage(),
-          ),
-        );
+        context.push('/canvas/$moduleKey');
       },
       child: Stack(
         children: [
@@ -258,9 +254,7 @@ class GridPage extends StatelessWidget {
                 ref.read(titleProvider.notifier).state = name;
                 controller.dispose();
                 if (context.mounted) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const CanvasPage(),
-                  ));
+                  context.push('/canvas/$openModuleId');
                 }
               },
               child: Container(
